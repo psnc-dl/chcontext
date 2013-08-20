@@ -1,0 +1,39 @@
+{
+	"name": "chcontext",
+	"title": "CHContext",
+	"description": "Web widget for searching objects of cultural heritage",
+	"version": "0.1.0-pre",
+	"homepage": "https://github.com/psnc-dl/chcontext",
+	"author": {
+		"name": "Poznań Supercomputer and Networking Center",
+		"email": "dl-team@lists.man.poznan.pl"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/psnc-dl/chcontext.git"
+	},
+	"bugs": {
+		"url": "https://github.com/psnc-dl/chcontext/issues"
+	},
+	"licenses": [
+		{
+			"type": "EUPL",
+			"url": "https://github.com/chcontext/issues/blob/master/LICENSE"
+		}
+	],
+	"devDependencies": {
+		"grunt": "~0.4.1",
+		"grunt-contrib-clean": "~0.5.0",
+		"grunt-contrib-concat": "~0.3.0",
+		"grunt-contrib-csslint": "~0.1.2",
+		"grunt-contrib-cssmin": "~0.6.1",
+		"grunt-contrib-imagemin": "~0.2.0",
+		"grunt-contrib-jshint": "~0.6.3",
+		"grunt-contrib-uglify": "~0.2.2",
+		"grunt-contrib-watch": "~0.5.2",
+		"grunt-base64": "~0.1.0",
+		"grunt-image-resize": "~0.2.0",
+		"grunt-include-replace": "~1.1.0",
+		"grunt-text-replace": "~0.3.6"
+	}
+}

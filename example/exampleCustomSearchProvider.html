@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+		<script type="text/javascript" src="../dist/chcontext.js"></script>
+		<link rel="stylesheet" href="sample.css" type="text/css" >
+		<title>Example Custom Provider</title>
+	</head>
+	<body>
+		<h1>Example Custom Provider</h1>
+		<script type="text/javascript">
+			var MyCustomSearchProvider = function(dataHandler) {
+
+				this.search = function(searchString, maxNumberOfElements) {
+					dataHandler(createRandomResult(searchString, maxNumberOfElements));
+				};
+
+				function createRandomResult(searchString, maxNumberOfElements) {
+					var result = {
+						resultsLink: "http://example.org/search?q=" + encodeURIComponent(searchString) + '&fromWidget=chContext',
+						numFound: Math.floor((Math.random() * 100) + 1)
+					};
+					result.results = new Array();
+					for (var i = 0; i < Math.min(maxNumberOfElements, result.numFound); i++) {
+						var id = Math.floor((Math.random() * 100) + 1);
+						result.results[i] = {
+							link: "http://example.org/item/" + id,
+							imgLink: "http://placekitten.com/" + id + "/" + id,
+							title: "Title of " + id,
+							author: "Author of " + id
+						};
+					}
+					result.dataProvider = {
+						link: "http://placekitten.com/150/200",
+						img: "http://placekitten.com/196/120",
+						name: "Random Search Provider & special chars: \"'<>"
+					};
+					return result;
+				}
+
+			};
+
+		</script>
+		<div id="widget1" class="chcontext-widget-wrapper" data-customSearchProvider="MyCustomSearchProvider" data-queryselector="h1:first"></div>
+	</body>
+</html>
+

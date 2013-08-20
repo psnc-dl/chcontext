@@ -1,0 +1,91 @@
+.chcontext-widget-container {
+	overflow: auto;
+}
+
+.chcontext-widget-container ol {
+	list-style-type: decimal;
+}
+
+.chcontext-widget-container-poweredBy {
+	float: right;
+}
+
+.chcontext-widget-container-poweredBy img {
+	max-width: 100px;
+	max-height: 24px;	
+	float: right;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	
+}
+
+.chcontext-widget-container-title-thumbnail {
+	margin-left: 55px;
+}
+
+/*.chcontext-widget-container-title {
+}*/
+
+.chcontext-widget-container-thumbnail-wrapper {
+	width: 50px;
+	float: left;
+	height: 100%;
+	text-align: center; 
+}
+
+.chcontext-widget-container-thumbnail-wrapper img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+.chcontext-widget-container-more {
+	margin: 3px;
+	display: inline-block;
+}
+
+.chcontext-widget-container-more a {
+	text-decoration: underline;
+}
+
+.chcontext-widget-container-result-container {
+    position: relative;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.chcontext-widget-container-tooltip-box {
+	position: fixed;
+	z-index:999;
+	max-width: 300px;
+	border-radius: 5px;
+	padding: 5px;
+	background: white;
+	border: 1px solid #718ba1;
+	margin: 0 auto;
+}
+
+.chcontext-widget-container-tooltip-box-left {
+	float: left;
+	text-align: center;
+	line-height: 50px; 
+	overflow: hidden;
+}
+
+.chcontext-widget-container-tooltip-box-left img {
+	max-width: 100px;
+	max-height: 100px;
+	vertical-align: middle;
+	margin-right: 4px;
+	padding-right: 4px;
+}
+
+.chcontext-widget-container-tooltip-box-right {
+	min-height: 20px; 
+	line-height: 20px; 
+	overflow: hidden;
+}
+
+.chcontext-widget-container-tooltip-box-label {
+	font-weight: bold;
+}
+

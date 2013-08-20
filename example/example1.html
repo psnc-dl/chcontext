@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+		<script type="text/javascript" src="../dist/chcontext.js"></script>
+		<script type="text/javascript" src="frmap.js"></script>
+		<link rel="stylesheet" href="sample.css" type="text/css" />
+		<title>Example 1</title>
+	</head>
+	<body>
+		<h1>Example 1</h1>
+		<h3>Locale = fr & query = obraz</h3>
+		<div id="widget1" class="chcontext-widget-wrapper" data-searchProvider="FBC+" data-query="obraz" data-locale="fr">
+		</div>
+		<hr />
+		<h3>Tags:</h3>
+		<ul id="tags">
+			<li>sculpture</li>
+			<li>painting</li>
+		</ul>
+		<h3>Default locale & show-img=false, custom styles</h3>
+		<div id="widget2" class="chcontext-widget-wrapper" data-searchProvider="FBC+" data-show-img="false" data-queryselector="#tags li" style="width: 200px; max-height: 1000px;">
+		</div>
+		<hr />
+		<h3>Query string = "<span id="toSeach">dzban</span>" from element with id="toSeach", search results not from CMNW</h3>
+		<div id="widget3" class="chcontext-widget-wrapper" data-searchProvider="FBC+" data-queryselector="#toSeach" data-query="NOT europeana_dataProvider:&quot;Cyfrowe Muzeum Narodowe w Warszawie&quot;" data-resultCount="3"></div>
+		<br />
+	</body>
+</html>
+
