@@ -128,7 +128,7 @@ PSNC.chcontext.searchProviders = [
 	
 	function prepareQuery(matchedElements) {
 		var query = '';
-		if (matchedElements.size() == 0){
+		if (matchedElements.size() === 0){
 			console.log('There is not elements maching given selector. ');
 			return null;
 		} else if (matchedElements.size() == 1){
@@ -137,9 +137,9 @@ PSNC.chcontext.searchProviders = [
 			query += '(';
 			matchedElements.each(function(i){
 				query += '(' + jQuery(this).text() + ')';
- 				if (i < matchedElements.size() - 1){
- 					query += ' OR ';
- 				}
+				if (i < matchedElements.size() - 1){
+					query += ' OR ';
+				}
 				});
 			query += ')';
 		}
@@ -248,7 +248,7 @@ PSNC.chcontext.searchProviders = [
 				var self = container;
 				$(self).hide();
 				var query = getQuery($, container);
-				if (typeof query !== 'undefined' && query != null) {
+				if (typeof query !== 'undefined' && query !== null) {
 
 					//- pobrać wyniki wyszukiwania ze źródła 
 
@@ -557,9 +557,9 @@ PSNC.chcontext.searchProviders = [
 			}
 			code += '</div>';
 			$(container).append(code);
-			 var tooltipBox = $("#chcontext-widget-container-tooltip-box");
-			 tooltipWidth = tooltipBox.width();
-			 tooltipHeight = tooltipBox.height();
+			var tooltipBox = $("#chcontext-widget-container-tooltip-box");
+			tooltipWidth = tooltipBox.width();
+			tooltipHeight = tooltipBox.height();
 
 		}, function() {
 			$("#chcontext-widget-container-tooltip-box").remove();
