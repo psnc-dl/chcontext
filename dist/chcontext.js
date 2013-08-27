@@ -1,5 +1,5 @@
 /*!
- * CHContext v0.1.0-pre
+ * CHContext v1.0.0
  * https://github.com/psnc-dl/chcontext
  *
  * Copyright 2013 Poznań Supercomputer and Networking Center
