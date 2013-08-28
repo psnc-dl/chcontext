@@ -1,8 +1,27 @@
 # CHContext
 
-Web widget for searching objects of cultural heritage. 
+CHContext is a JavaScript-based widget that is able to provide a list of links to cultural heritage materials based on predefined item of a website on which it is embedded (via given JQuery HTML selector).
+
+Potential use scenarios include:
+- enrichemnt of a library catalogue website - beside beeing able to read the item (e.g. a book) description, you also get links to digitized copies of this item or items created by the same author
+- enrichment of a heritage-related blog - you easily can provide links to materials related to each blog post (we aslo made [a WordPress plugin for that](https://github.com/psnc-dl/wp-chcontext/wiki/CHContext-WordPress-Plugin-Description)!)
+
+The plugin supports three data sources:
+- [Europeana](http://europeana.eu/) (with API key)
+- [Digital Public Library of America](http://dp.la/) (with API key)
+- [Polish Digital Libraries Federation](http://fbc.pionier.net.pl/) (without API key)
+
+There is also possibility to define your own data provider(s). The widget look is customizable via CSS.
+
+## Acknowledgments
+The widget is developed by [Digital Libraries Team](http://dl.psnc.pl/) of [Poznań Supercomputing and Networking Center](http://www.man.poznan.pl/).
+
+This project was initiated and partially funded as a part of the [Europeana Awareness](http://pro.europeana.eu/web/europeana-awareness) project, financed under the ICT Policy Support Programme (ICT PSP) as part of the Competitiveness and Innovation Framework Programme by the European Community.
+
 
 ## How to use it
+
+### Install the widget
 
 1. Add chcontext to your project
  * We recommend you to use JsDelivr CDN files: 
@@ -16,24 +35,18 @@ Web widget for searching objects of cultural heritage.
  <script type="text/javascript" src="$PATH/chcontext.min.js"></script>
  ````
 
-1.  Put `div` element in place where you want the widget to appear. It has to have `class="chcontext-widget-wrapper"` parameter. Please read [parameters section](#parameters) to configure the widget. 
+ Development minified and unminified versions can be found [here](dist/): 
+
+2.  Put `div` element in place where you want the widget to appear. It has to have `class="chcontext-widget-wrapper"` parameter. Please read [parameters section](#parameters) to configure the widget. 
 
  ````html
  <div id="widget1" class="chcontext-widget-wrapper" data-searchProvider="FBC+" data-queryselector="h1">
  </div>
  ````
- 
- Development minified and unminified version can be found [here](dist/): 
- 
-### Style your widget 
-You can change the look of the widget using CSS. First check [the default style](src/style.css) to find out what classes you should use. Then use inline styling in `div` element:
-````html
- <div id="widget1" class="chcontext-widget-wrapper" ... style="width:100px; height:200px">
- </div>
-````
-or include separate css file. Try out [working example](example/example1.html). (Please use [GitHub HTML Preview](http://htmlpreview.github.io/) to render this HTML.)
+### Configure the widget
 
-## Parameters
+Widget div tag can have the following parameters
+
 * `class` - Indicates that current html element will wrap widget html code. Default value is `chcontext-widget-wrapper` and it should not be overrided.
 * `data-searchProvider` - Name of search provider. Possible values:
   * `FBC+` - [Digital Libraries Federation](http://beta.fbc.pionier.net.pl/)
@@ -52,7 +65,17 @@ or include separate css file. Try out [working example](example/example1.html). 
 * `data-apikey` - API key. Required to access results from [Europeana](http://europeana.eu/portal/api/registration.html) or [DPLA](http://dp.la/info/developers/codex/policies/#get-a-key).
 * `data-show-img` - Whether images should be displayed next to the results.
 
-## Custom language
+### Style the widget 
+
+You can change the look of the widget using CSS. First check [the default style](src/style.css) to find out what classes you should use. Then use inline styling in `div` element:
+````html
+ <div id="widget1" class="chcontext-widget-wrapper" ... style="width:100px; height:200px">
+ </div>
+````
+or include separate css file. Try out [working example](example/example1.html). (Please use [GitHub HTML Preview](http://htmlpreview.github.io/) to render this HTML.)
+
+
+### Customize the widget language
 Currently only English and Polish are supported. To use widget with other language you have to 
 
 * Define JavaScript map containing labels in your language. This map should be defined in separate JS file or inside of `<script type="text/javascript">` tag.
@@ -71,7 +94,7 @@ Currently only English and Polish are supported. To use widget with other langua
 * Define `data-locale` parameter. It should be equal to `your_language_name` from the JS code.
 * You can try out [working example](example/example1.html). (Please use [GitHub HTML Preview](http://htmlpreview.github.io/) to render this HTML.)
 
-##Custom search provider
+### Add custom search provider
 * Define JavaScript object with your implentation of `search` function. 
 * `search` function should return results object. Structure of this object can be found [here](test/data.json).
 * Define `data-customSearchProvider` parameter. It should conatain the name of your search provider object.
@@ -79,7 +102,7 @@ Currently only English and Polish are supported. To use widget with other langua
 Try out [working example](example/exampleCustomSearchProvider.html). (Please use [GitHub HTML Preview](http://htmlpreview.github.io/) to render this HTML.)
 
 
-## License
+## Licence
 Copyright (c) 2013 Poznań Supercomputing and Networking Center  
 Licensed under the EUPL, Version 1.1 or – as soon they will be approved by the European Commission - subsequent versions of the EUPL (the "Licence"). 
 
