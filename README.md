@@ -8,13 +8,9 @@ Web widget for searching objects of cultural heritage.
  * We recommend you to use JsDelivr CDN files: 
 
  ````html
- <!-- Use LATEST folder to always get the latest version-->
- <script type="text/javascript" src="http://cdn.jsdelivr.net/chcontext/latest/chcontext.min.js"></script>
- 
- <!-- Or use TAG number for specific version -->
- <script type="text/javascript" src="http://cdn.jsdelivr.net/chcontext/1.0/chcontext.min.js"></script>
+ <script type="text/javascript" src="http://cdn.jsdelivr.net/chcontext/1.0.0/chcontext.min.js"></script>
  ````
- * or download [`chcontext.min.js`](/dist/chcontext.min.js), add it to your project and include it in your html using appropriate path.
+ * or download [chcontext.min.js](http://cdn.jsdelivr.net/chcontext/1.0.0/chcontext.min.js), add it to your project and include it in your html using appropriate path.
 
  ````html
  <script type="text/javascript" src="$PATH/chcontext.min.js"></script>
@@ -26,6 +22,8 @@ Web widget for searching objects of cultural heritage.
  <div id="widget1" class="chcontext-widget-wrapper" data-searchProvider="FBC+" data-queryselector="h1">
  </div>
  ````
+ 
+ Development minified and unminified version can be found [here](dist/): 
  
 ### Style your widget 
 You can change the look of the widget using CSS. First check [the default style](src/style.css) to find out what classes you should use. Then use inline styling in `div` element:
