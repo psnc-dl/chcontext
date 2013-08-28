@@ -4,7 +4,7 @@ CHContext is a JavaScript-based widget that is able to provide a list of links t
 
 Potential use scenarios include:
 - enrichemnt of a library catalogue website - beside beeing able to read the item (e.g. a book) description, you also get links to digitized copies of this item or items created by the same author
-- enrichment of a heritage-related blog - you easily can provide links to materials related to each blog post (we aslo made [a WordPress plugin for that](https://github.com/psnc-dl/wp-chcontext/wiki/CHContext-WordPress-Plugin-Description)!)
+- enrichment of a heritage-related blog - you easily can provide links to materials related to each blog post (we also made [a WordPress plugin for that](https://github.com/psnc-dl/wp-chcontext/wiki/CHContext-WordPress-Plugin-Description)!)
 
 The plugin supports three data sources:
 - [Europeana](http://europeana.eu/) (with API key)
