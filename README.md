@@ -44,7 +44,7 @@ Licensed under the EUPL, Version 1.1 or – as soon they will be approved by the
 
  Development minified and unminified versions can be found [here](dist/): 
 
-2.  Put `div` element in place where you want the widget to appear. It has to have `class="chcontext-widget-wrapper"` parameter. Please read [parameters section](#parameters) to configure the widget. 
+2.  Put `div` element in place where you want the widget to appear. It has to have `class="chcontext-widget-wrapper"` parameter. Please read [how to configure the widget](#2-configure-the-widget). 
 
  ````html
  <div id="widget1" class="chcontext-widget-wrapper" data-searchProvider="FBC+" data-queryselector="h1">
@@ -69,8 +69,8 @@ Widget main `div` tag can have the following configuration parameters:
 * `data-show-img` - Whether images should be displayed next to the results.
 
 **Notice:**
-* One of `data-searchProvider` or `data-customSearchProvider` parameters has to be defined. If both are defined widget uses data-customSearchProvider.**
-* One of `data-query` or `data-queryselector` parameters has to be defined. If both are defined query is build from selector value cantatenated with `data-query`.**
+* One of `data-searchProvider` or `data-customSearchProvider` parameters has to be defined. If both are defined widget uses data-customSearchProvider.
+* One of `data-query` or `data-queryselector` parameters has to be defined. If both are defined query is build from selector value cantatenated with `data-query`.
 * The `class` parameter indicates that current html element will wrap widget html code. Default value is `chcontext-widget-wrapper` and it should not be overrided.
 
 
