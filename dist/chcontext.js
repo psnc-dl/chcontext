@@ -22,7 +22,7 @@
  * See the Licence for the specific language governing
  * permissions and limitations under the Licence.
  *
- * Date: 2013-08-27
+ * Date: 2013-08-30
  */
 var PSNC = PSNC || {};
 PSNC.chcontext = PSNC.chcontext || {};
@@ -112,14 +112,25 @@ PSNC.chcontext.searchProviders = [
 		if (typeof selector !== 'undefined') {
 			matchedElements = jQuery(selector);
 		}
-		// using query from selector
+		// there is query from selector
 		if (typeof matchedElements !== 'undefined'){
-			query = prepareQuery(matchedElements);
-			if (query && !!queryStr){
-				query += ' ' + queryStr;
-			}			
+			// prepare dynamic query from matched elements
+			var dynamicQuery = prepareQuery(matchedElements);
+			// moreover, there is static query 
+			if (dynamicQuery && !!queryStr){
+				// dynamic query will be inserted into static query
+				if (queryStr.indexOf('$$') != -1){
+					query = queryStr.replace('$$', dynamicQuery);
+				// static query will be added to dynamic query
+				} else {
+					query = dynamicQuery + ' ' + queryStr;
+				}
+			} else {
+				// use dynamic query
+				query = dynamicQuery;
+			}
 		}
-		// or using fixed query
+		// there is only fixed query
 		else if (!!queryStr){
 			query = queryStr;				
 		}
