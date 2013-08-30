@@ -62,7 +62,7 @@ Widget main `div` tag can have the following configuration parameters:
 * `data-customSearchProvider` - Name of custom search provider. [Read how to define custom search provider](#custom-search-provider). 
 * `data-query` - defines the query 
 * `data-queryselector` - defines which DOM element text will be used to build the query. Elements have to be indicated by [jQuery selector](http://api.jquery.com/category/selectors/). [Here](http://www.w3schools.com/jquery/jquery_selectors.asp) you can find some examples. 
-* `data-iframe-selector` - see [working example](example/example2.html). `data-queryselector` should also be defined. ...
+* `data-iframe-selector` - can be used to run query selection inside of an iframe. An iframe have to be indicated by jQuery selector. This parameter must be used together with `data-queryselector`. Be aware of that you can select query from inside of an iframe if the iframe is on the same domain as main page. See [working example](example/example2.html). (Please use [GitHub HTML Preview](http://htmlpreview.github.io/) to render this HTML.)
 * `data-locale` - Language code which indicates the language of widget labels. If the property is not defined widget tries to use language indicated by user browser. Currently English and Polish are supported by default and English is the default language. Custom language can be also used (please read [Custom Language section](#custom-language)).
 * `data-resultCount` - Maximum number of results to be displayed. Default value is 5.
 * `data-apikey` - API key. Required to access results from [Europeana](http://europeana.eu/portal/api/registration.html) or [DPLA](http://dp.la/info/developers/codex/policies/#get-a-key).
