@@ -76,10 +76,10 @@ Widget main `div` tag can have the following configuration parameters:
 #### Building queries
 * Query is build by concatenation of `data-query` text and value indicated by `data-queryselector`. 
  * if `data-query="painting"` and  `data-queryselector="h1"` where `h1` DOM element text is `Monet` then the resulting query is `painting Monet`. 
- * try out [working example (#4)](example/example1.html). Please use GitHub HTML Preview to render this HTML.
+ * try out [working example (#4)](example/example1.html). Please use [GitHub HTML Preview](http://htmlpreview.github.io/) to render this HTML.
 * It is also possible to build more complex queries by using value indicated by `data-queryselector` inside of the query defined in `data-query`. You should define `data-queryselector` and type `$$` inside of `data-query` text, in place where you want the value of `data-queryselector` to appear.
  * if `data-query="painting AND creator:$$` and  `data-queryselector="h1"` where `h1` DOM element text is `Monet` then the resulting query is `painting AND creator:Monet`.
- * try out [working example (#3)](example/example1.html). Please use GitHub HTML Preview to render this HTML.
+ * try out [working example (#3)](example/example1.html). Please use [GitHub HTML Preview](http://htmlpreview.github.io/) to render this HTML.
 
 ### 3. Style the widget  (optionally)
 
