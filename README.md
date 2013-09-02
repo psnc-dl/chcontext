@@ -117,4 +117,10 @@ Currently only English and Polish are supported. To use widget with other langua
 
 Try out [working example](example/exampleCustomSearchProvider.html) (please use [GitHub HTML Preview](http://htmlpreview.github.io/) to render this HTML).
 
+# Release notes
 
+## 1.1.0
+* Query can be parameterized with `$$`, which will be replaced by text indicated by a query selector. 
+
+## 1.0.0
+* Initial release. 
