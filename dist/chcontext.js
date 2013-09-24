@@ -54,11 +54,11 @@ PSNC.chcontext.DEFAULT_RESULT_COUNT = 5;
 PSNC.chcontext.search = function(query, container) {
 	var dataHandler = function(data) {
 		if ( typeof data.numFound !== 'undefined' && data.numFound > 0) {
-			var locale = PSNC.chcontext.jQuery(container).data("locale");
+			var locale = PSNC.chcontext.jQuery(container).attr("data-locale");
 			var labels = PSNC.chcontext.prepareLabels(PSNC.chcontext.jQuery, locale);
 			var showImg;
 			// images are displayed by default
-			if (PSNC.chcontext.jQuery(container).data("show-img") === false)
+			if (PSNC.chcontext.jQuery(container).attr("data-show-img") === false)
 				showImg = false;
 			else
 				showImg = true;
@@ -78,7 +78,7 @@ PSNC.chcontext.search = function(query, container) {
 	};
 	var service;
 
-	var customSearchProvider = PSNC.chcontext.jQuery(container).data("customsearchprovider");
+	var customSearchProvider = PSNC.chcontext.jQuery(container).attr("data-customsearchprovider");
 	if ( typeof customSearchProvider !== 'undefined') {
 		// create custom search provider specified and (hopefully) defined by user
 		var customSearchProviderType = window[customSearchProvider];
@@ -89,8 +89,8 @@ PSNC.chcontext.search = function(query, container) {
 		}
 	} else {
 		// create our own search provider
-		var searchProviderName = PSNC.chcontext.jQuery(container).data("searchprovider");
-		var apiKey = PSNC.chcontext.jQuery(container).data("apikey");
+		var searchProviderName = PSNC.chcontext.jQuery(container).attr("data-searchprovider");
+		var apiKey = PSNC.chcontext.jQuery(container).attr("data-apikey");
 		var serviceType = PSNC.chcontext.getSearchServiceByName(searchProviderName);
 		if ( serviceType instanceof Function) {
 			service = new serviceType(PSNC.chcontext.jQuery, dataHandler, apiKey);
@@ -99,7 +99,7 @@ PSNC.chcontext.search = function(query, container) {
 		}
 	}
 
-	var resultCount = PSNC.chcontext.jQuery(container).data("resultcount");
+	var resultCount = PSNC.chcontext.jQuery(container).attr("data-resultcount");
 	if ( typeof resultCount === 'undefined') {
 		resultCount = PSNC.chcontext.DEFAULT_RESULT_COUNT;
 	}
@@ -268,7 +268,7 @@ PSNC.chcontext.refreshAll = function() {
 
 			// iterate over all containers
 			PSNC.chcontext.jQuery(".chcontext-widget-wrapper").each(function(i, container) {
-				if(!PSNC.chcontext.jQuery(container).data("init-disabled"))
+				if(!PSNC.chcontext.jQuery(container).attr("data-init-disabled"))
 				{
 					PSNC.chcontext.refresh(container);
 				}
@@ -281,9 +281,9 @@ PSNC.chcontext.refreshAll = function() {
 
 
 PSNC.chcontext.getQuery = function(container) {
-	var queryStr = PSNC.chcontext.jQuery(container).data("query");
-	var selector = PSNC.chcontext.jQuery(container).data("queryselector");
-	var iframeselector = PSNC.chcontext.jQuery(container).data("iframe-selector");
+	var queryStr = PSNC.chcontext.jQuery(container).attr("data-query");
+	var selector = PSNC.chcontext.jQuery(container).attr("data-queryselector");
+	var iframeselector = PSNC.chcontext.jQuery(container).attr("data-iframe-selector");
 
 	if ( typeof selector === 'undefined' && typeof queryStr === 'undefined') {
 		console.error('CHContext configuration error. data-query or data-queryselector must be configured. ');
@@ -507,11 +507,11 @@ PSNC.chcontext.prepareQuery = function(matchedElements) {
 		this.search = function(searchString, maxNumberOfElements) {
 			$.ajax({
 				url: searchUrl + '?q=' + encodeURIComponent(searchString) + '&page_size=' + maxNumberOfElements + '&fields=object,sourceResource.title,sourceResource.creator,id,object&api_key=' + apiKey + '&callback=?',
-				timeout: REQUEST_TIMEOUT,
+				timeout: PSNC.chcontext.REQUEST_TIMEOUT,
 				searchString: searchString,
 				dataType: 'json',
 				data: {},
-				error: ajaxErrorHandler,
+				error: PSNC.chcontext.ajaxErrorHandler,
 				success: mapData
 			});
 		};
@@ -569,7 +569,7 @@ PSNC.chcontext.prepareQuery = function(matchedElements) {
 			var img = $("img", this);
 			var title = $(this).find("#title-value").html();
 			var author = $(this).find("#author-value").html();
-			var error = img.data("img-error");
+			var error = img.attr("data-img-error");
 			var code = "";
 
 			code += '<div id="chcontext-widget-container-tooltip-box" class="chcontext-widget-container-tooltip-box">';
