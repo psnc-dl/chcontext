@@ -133,7 +133,7 @@ module.exports = function(grunt) {
 				tasks: ['dist']
 			}, 
 			test: {
-				files: ['test/tests.html'],
+				files: ['test/*.html'],
 				tasks: ['test']
 			}
 		}

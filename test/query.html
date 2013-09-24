@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Query tests</title>
+		<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.12.0.css">
+		<script src="http://code.jquery.com/qunit/qunit-1.12.0.js"></script>
+		<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+		<script src="../dist/chcontext.js"></script>
+		<script>
+			var PSNC = PSNC || {};
+			PSNC.chcontext = PSNC.chcontext || {};
+			test("get query", function() {
+				equal(PSNC.chcontext.getQuery($("#widget-q1")), "book");
+				equal(PSNC.chcontext.getQuery($("#widget-q2")), "Books");
+				equal(PSNC.chcontext.getQuery($("#widget-q3")), "((painting) OR (sculpture))");
+				equal(PSNC.chcontext.getQuery($("#widget-q4")), "Books music");
+				equal(PSNC.chcontext.getQuery($("#widget-q5")), "type:Books OR paintings");
+			});
+		</script>
+	</head>
+	<body>
+		<div id="qunit"></div>
+		<div id="qunit-fixture">
+			<div id="header">Books</div>
+			<div id="tags"><a href="#">painting</a><a href="#">sculpture</a></div>
+			<iframe id="iframeid" src="../example/iframe.html"></iframe>
+			<div id="widget-q1" class="chcontext-widget-wrapper" data-searchProvider="FBC+" data-query="book" ></div>
+			<div id="widget-q2" class="chcontext-widget-wrapper" data-searchProvider="FBC+" data-queryselector="#header" ></div>
+			<div id="widget-q3" class="chcontext-widget-wrapper" data-searchProvider="FBC+" data-queryselector="#tags a" ></div>
+			<div id="widget-q4" class="chcontext-widget-wrapper" data-searchProvider="FBC+" data-queryselector="#header" data-query="music"></div>
+			<div id="widget-q5" class="chcontext-widget-wrapper" data-searchProvider="FBC+" data-queryselector="#header" data-query="type:$$ OR paintings"></div>
+		</div>
+	</body>
+</html>
