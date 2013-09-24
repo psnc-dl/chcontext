@@ -19,13 +19,14 @@ PSNC.chcontext.searchProviders = [
 ];
 
 
+PSNC.chcontext.jQuery;
+PSNC.chcontext.defaultLocale = "en";
+PSNC.chcontext.DEFAULT_RESULT_COUNT = 5;
 
 
 (function() {
 
-	var jQuery;
-	var defaultLocale = "en";
-	var DEFAULT_RESULT_COUNT = 5;
+	
 
 	if (window.jQuery === undefined || window.jQuery.fn.jquery !== '1.10.2') {
 		loadScript("http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js", function() {
@@ -33,7 +34,7 @@ PSNC.chcontext.searchProviders = [
 		});
 
 	} else {
-		jQuery = window.jQuery;
+		PSNC.chcontext.jQuery = window.jQuery;
 		main();
 	}
 
@@ -61,16 +62,16 @@ PSNC.chcontext.searchProviders = [
 	}
 
 	function scriptLoadHandler() {
-		jQuery = window.jQuery.noConflict(true);
+		PSNC.chcontext.jQuery = window.jQuery.noConflict(true);
 		main();
 	}
 
 
 	function getQuery($, container) {
 
-		var queryStr = jQuery(container).data("query");
-		var selector = jQuery(container).data("queryselector");
-		var iframeselector = jQuery(container).data("iframe-selector");
+		var queryStr = PSNC.chcontext.jQuery(container).data("query");
+		var selector = PSNC.chcontext.jQuery(container).data("queryselector");
+		var iframeselector = PSNC.chcontext.jQuery(container).data("iframe-selector");
 		
 		if (typeof selector === 'undefined' && typeof queryStr === 'undefined'){
 			console.error('CHContext configuration error. data-query or data-queryselector must be configured. ');
@@ -85,10 +86,10 @@ PSNC.chcontext.searchProviders = [
 		var matchedElements;
 
 		if (typeof iframeselector !== 'undefined') {
-			matchedElements = jQuery(iframeselector).contents().find(selector);
+			matchedElements = PSNC.chcontext.jQuery(iframeselector).contents().find(selector);
 		} else 
 		if (typeof selector !== 'undefined') {
-			matchedElements = jQuery(selector);
+			matchedElements = PSNC.chcontext.jQuery(selector);
 		}
 		// there is query from selector
 		if (typeof matchedElements !== 'undefined'){
@@ -125,7 +126,7 @@ PSNC.chcontext.searchProviders = [
 		} else {
 			query += '(';
 			matchedElements.each(function(i){
-				query += '(' + jQuery(this).text() + ')';
+				query += '(' + PSNC.chcontext.jQuery(this).text() + ')';
 				if (i < matchedElements.size() - 1){
 					query += ' OR ';
 				}
@@ -136,13 +137,13 @@ PSNC.chcontext.searchProviders = [
 	}
 
 	function main() {
-		jQuery(document).ready(function($) {
+		PSNC.chcontext.jQuery(document).ready(function($) {
 			// load css
 			$('<style type="text/css">' + "@@include('style.css')" + '</style>').appendTo("head");
 
 			// iterate over all containers
-			jQuery(".chcontext-widget-wrapper").each(function(i, container) {
-				if(!jQuery(container).data("init-disabled"))
+			PSNC.chcontext.jQuery(".chcontext-widget-wrapper").each(function(i, container) {
+				if(!PSNC.chcontext.jQuery(container).data("init-disabled"))
 				{
 					var children = $(container).children();
 					var self = container;
@@ -154,10 +155,10 @@ PSNC.chcontext.searchProviders = [
 	
 						var dataHandler = function(data) {
 							if (typeof data.numFound !== 'undefined' && data.numFound > 0) {
-								var locale = jQuery(container).data("locale");
+								var locale = PSNC.chcontext.jQuery(container).data("locale");
 								var labels = prepareLabels($, locale);
 								var showImg;
-								if (jQuery(container).data("show-img") === false)
+								if (PSNC.chcontext.jQuery(container).data("show-img") === false)
 									showImg = false;
 								else
 									showImg = true; // images are displayed by default
@@ -177,7 +178,7 @@ PSNC.chcontext.searchProviders = [
 						};
 						var service;
 	
-						var customSearchProvider = jQuery(container).data("customsearchprovider");
+						var customSearchProvider = PSNC.chcontext.jQuery(container).data("customsearchprovider");
 						if (typeof customSearchProvider !== 'undefined') {
 							// create custom search provider specified and (hopefully) defined by user
 							var customSearchProviderType = window[customSearchProvider];
@@ -188,8 +189,8 @@ PSNC.chcontext.searchProviders = [
 							}
 						} else {
 							// create our own search provider
-							var searchProviderName = jQuery(container).data("searchprovider");
-							var apiKey = jQuery(container).data("apikey");
+							var searchProviderName = PSNC.chcontext.jQuery(container).data("searchprovider");
+							var apiKey = PSNC.chcontext.jQuery(container).data("apikey");
 							var serviceType = getSearchServiceByName(searchProviderName);
 							if (serviceType instanceof Function) {
 								service = new serviceType($, dataHandler, apiKey);
@@ -198,9 +199,9 @@ PSNC.chcontext.searchProviders = [
 							}
 						}
 	
-						var resultCount = jQuery(container).data("resultcount");
+						var resultCount = PSNC.chcontext.jQuery(container).data("resultcount");
 						if (typeof resultCount === 'undefined') {
-							resultCount = DEFAULT_RESULT_COUNT;
+							resultCount = PSNC.chcontext.DEFAULT_RESULT_COUNT;
 						}
 	
 						if (service !== undefined) {
@@ -390,10 +391,10 @@ PSNC.chcontext.searchProviders = [
 		if (!locale) {
 			locale = discoverLocale();
 			if (!locale) {
-				locale = defaultLocale;
+				locale = PSNC.chcontext.defaultLocale;
 			}
 		}
-		var defaultMap = PSNC.chcontext[defaultLocale];
+		var defaultMap = PSNC.chcontext[PSNC.chcontext.defaultLocale];
 		var localeMap = PSNC.chcontext[locale];
 		var map = defaultMap;
 		if (!!localeMap) {
