@@ -22,7 +22,7 @@
  * See the Licence for the specific language governing
  * permissions and limitations under the Licence.
  *
- * Date: 2013-08-30
+ * Date: 2013-09-24
  */
 var PSNC = PSNC || {};
 PSNC.chcontext = PSNC.chcontext || {};
@@ -63,6 +63,9 @@ PSNC.chcontext.searchProviders = [
 		main();
 	}
 
+	
+
+
 	function loadScript(url, callback) {
 		var script = document.createElement('script');
 		script.setAttribute("type", "text/javascript");
@@ -87,6 +90,7 @@ PSNC.chcontext.searchProviders = [
 		jQuery = window.jQuery.noConflict(true);
 		main();
 	}
+
 
 	function getQuery($, container) {
 
@@ -255,69 +259,72 @@ PSNC.chcontext.searchProviders = [
 
 			// iterate over all containers
 			jQuery(".chcontext-widget-wrapper").each(function(i, container) {
-				var children = $(container).children();
-				var self = container;
-				$(self).hide();
-				var query = getQuery($, container);
-				if (typeof query !== 'undefined' && query !== null) {
-
-					//- pobrać wyniki wyszukiwania ze źródła 
-
-					var dataHandler = function(data) {
-						if (typeof data.numFound !== 'undefined' && data.numFound > 0) {
-							var locale = jQuery(container).data("locale");
-							var labels = prepareLabels($, locale);
-							var showImg;
-							if (jQuery(container).data("show-img") === false)
-								showImg = false;
-							else
-								showImg = true; // images are displayed by default
-							var widgetContainer = $(".chcontext-widget-container:first", container);
-							var defineContainer = !($(widgetContainer)[0]);
-							var result = prepareHTML($, data, labels, showImg,defineContainer);
-							if(!defineContainer){
-								widgetContainer.html(result);
+				if(!jQuery(container).data("init-disabled"))
+				{
+					var children = $(container).children();
+					var self = container;
+					$(self).hide();
+					var query = getQuery($, container);
+					if (typeof query !== 'undefined' && query !== null) {
+	
+						//- pobrać wyniki wyszukiwania ze źródła 
+	
+						var dataHandler = function(data) {
+							if (typeof data.numFound !== 'undefined' && data.numFound > 0) {
+								var locale = jQuery(container).data("locale");
+								var labels = prepareLabels($, locale);
+								var showImg;
+								if (jQuery(container).data("show-img") === false)
+									showImg = false;
+								else
+									showImg = true; // images are displayed by default
+								var widgetContainer = $(".chcontext-widget-container:first", container);
+								var defineContainer = !($(widgetContainer)[0]);
+								var result = prepareHTML($, data, labels, showImg,defineContainer);
+								if(!defineContainer){
+									widgetContainer.html(result);
+								}
+								else $(self).append(result);
+								$(self).show();
+	
+								handleTooltips($, container, labels);
+							} else {
+								console.log("There is no result in obtained data from service");
 							}
-							else $(self).append(result);
-							$(self).show();
-
-							handleTooltips($, container, labels);
+						};
+						var service;
+	
+						var customSearchProvider = jQuery(container).data("customsearchprovider");
+						if (typeof customSearchProvider !== 'undefined') {
+							// create custom search provider specified and (hopefully) defined by user
+							var customSearchProviderType = window[customSearchProvider];
+							if (customSearchProviderType instanceof Function) {
+								service = new customSearchProviderType(dataHandler);
+							} else {
+								console.error("Custom search provider not defined properly: " + customSearchProvider);
+							}
 						} else {
-							console.log("There is no result in obtained data from service");
+							// create our own search provider
+							var searchProviderName = jQuery(container).data("searchprovider");
+							var apiKey = jQuery(container).data("apikey");
+							var serviceType = getSearchServiceByName(searchProviderName);
+							if (serviceType instanceof Function) {
+								service = new serviceType($, dataHandler, apiKey);
+							} else {
+								console.error("Search provider not existing: " + searchProviderName);
+							}
 						}
-					};
-					var service;
-
-					var customSearchProvider = jQuery(container).data("customsearchprovider");
-					if (typeof customSearchProvider !== 'undefined') {
-						// create custom search provider specified and (hopefully) defined by user
-						var customSearchProviderType = window[customSearchProvider];
-						if (customSearchProviderType instanceof Function) {
-							service = new customSearchProviderType(dataHandler);
+	
+						var resultCount = jQuery(container).data("resultcount");
+						if (typeof resultCount === 'undefined') {
+							resultCount = DEFAULT_RESULT_COUNT;
+						}
+	
+						if (service !== undefined) {
+							service.search(query, resultCount);
 						} else {
-							console.error("Custom search provider not defined properly: " + customSearchProvider);
+							console.log("Cannot create search provider service!");
 						}
-					} else {
-						// create our own search provider
-						var searchProviderName = jQuery(container).data("searchprovider");
-						var apiKey = jQuery(container).data("apikey");
-						var serviceType = getSearchServiceByName(searchProviderName);
-						if (serviceType instanceof Function) {
-							service = new serviceType($, dataHandler, apiKey);
-						} else {
-							console.error("Search provider not existing: " + searchProviderName);
-						}
-					}
-
-					var resultCount = jQuery(container).data("resultcount");
-					if (typeof resultCount === 'undefined') {
-						resultCount = DEFAULT_RESULT_COUNT;
-					}
-
-					if (service !== undefined) {
-						service.search(query, resultCount);
-					} else {
-						console.log("Cannot create search provider service!");
 					}
 				}
 			});
