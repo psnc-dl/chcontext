@@ -24,9 +24,90 @@ PSNC.chcontext.defaultLocale = "en";
 PSNC.chcontext.DEFAULT_RESULT_COUNT = 5;
 
 
-(function() {
 
-	
+PSNC.chcontext.search = function(query, container) {
+	var dataHandler = function(data) {
+		if ( typeof data.numFound !== 'undefined' && data.numFound > 0) {
+			var locale = PSNC.chcontext.jQuery(container).data("locale");
+			var labels = PSNC.chcontext.prepareLabels(PSNC.chcontext.jQuery, locale);
+			var showImg;
+			// images are displayed by default
+			if (PSNC.chcontext.jQuery(container).data("show-img") === false)
+				showImg = false;
+			else
+				showImg = true;
+			var widgetContainer = PSNC.chcontext.jQuery(".chcontext-widget-container:first", container);
+			var defineContainer = !(PSNC.chcontext.jQuery(widgetContainer)[0]);
+			var result = PSNC.chcontext.prepareHTML(PSNC.chcontext.jQuery, data, labels, showImg, defineContainer);
+			if (!defineContainer) {
+				widgetContainer.html(result);
+			} else
+				PSNC.chcontext.jQuery(container).append(result);
+			PSNC.chcontext.jQuery(container).show();
+
+			PSNC.chcontext.handleTooltips(PSNC.chcontext.jQuery, container, labels);
+		} else {
+			console.log("There is no result in obtained data from service");
+		}
+	};
+	var service;
+
+	var customSearchProvider = PSNC.chcontext.jQuery(container).data("customsearchprovider");
+	if ( typeof customSearchProvider !== 'undefined') {
+		// create custom search provider specified and (hopefully) defined by user
+		var customSearchProviderType = window[customSearchProvider];
+		if ( customSearchProviderType instanceof Function) {
+			service = new customSearchProviderType(dataHandler);
+		} else {
+			console.error("Custom search provider not defined properly: " + customSearchProvider);
+		}
+	} else {
+		// create our own search provider
+		var searchProviderName = PSNC.chcontext.jQuery(container).data("searchprovider");
+		var apiKey = PSNC.chcontext.jQuery(container).data("apikey");
+		var serviceType = PSNC.chcontext.getSearchServiceByName(searchProviderName);
+		if ( serviceType instanceof Function) {
+			service = new serviceType(PSNC.chcontext.jQuery, dataHandler, apiKey);
+		} else {
+			console.error("Search provider not existing: " + searchProviderName);
+		}
+	}
+
+	var resultCount = PSNC.chcontext.jQuery(container).data("resultcount");
+	if ( typeof resultCount === 'undefined') {
+		resultCount = PSNC.chcontext.DEFAULT_RESULT_COUNT;
+	}
+
+	if (service !== undefined) {
+		service.search(query, resultCount);
+	} else {
+		console.log("Cannot create search provider service!");
+	}
+}; 
+
+
+PSNC.chcontext.refresh = function(container) {
+	// var children = PSNC.chcontext.jQuery(container).children();
+	// var self = container;
+	PSNC.chcontext.jQuery(container).hide();
+	var query = PSNC.chcontext.getQuery(container);
+	if ( typeof query !== 'undefined' && query !== null) {
+		PSNC.chcontext.search(query, container);
+	}
+}; 
+
+
+PSNC.chcontext.refreshAll = function() {
+	PSNC.chcontext.jQuery(".chcontext-widget-wrapper").each(function(i, container) {
+		PSNC.chcontext.refresh(container);
+	});
+};
+
+
+
+
+
+(function() {
 
 	if (window.jQuery === undefined || window.jQuery.fn.jquery !== '1.10.2') {
 		loadScript("http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js", function() {
@@ -37,9 +118,6 @@ PSNC.chcontext.DEFAULT_RESULT_COUNT = 5;
 		PSNC.chcontext.jQuery = window.jQuery;
 		main();
 	}
-
-	
-
 
 	function loadScript(url, callback) {
 		var script = document.createElement('script');
@@ -66,76 +144,6 @@ PSNC.chcontext.DEFAULT_RESULT_COUNT = 5;
 		main();
 	}
 
-
-	function getQuery($, container) {
-
-		var queryStr = PSNC.chcontext.jQuery(container).data("query");
-		var selector = PSNC.chcontext.jQuery(container).data("queryselector");
-		var iframeselector = PSNC.chcontext.jQuery(container).data("iframe-selector");
-		
-		if (typeof selector === 'undefined' && typeof queryStr === 'undefined'){
-			console.error('CHContext configuration error. data-query or data-queryselector must be configured. ');
-			return null;
-		}
-		if (typeof iframeselector !== 'undefined' && typeof selector === 'undefined'){
-			console.error('CHContext configuration error. data-selector is required when you want to use iframe selection. ');
-			return null;
-		}
-		
-		var query;
-		var matchedElements;
-
-		if (typeof iframeselector !== 'undefined') {
-			matchedElements = PSNC.chcontext.jQuery(iframeselector).contents().find(selector);
-		} else 
-		if (typeof selector !== 'undefined') {
-			matchedElements = PSNC.chcontext.jQuery(selector);
-		}
-		// there is query from selector
-		if (typeof matchedElements !== 'undefined'){
-			// prepare dynamic query from matched elements
-			var dynamicQuery = prepareQuery(matchedElements);
-			// moreover, there is static query 
-			if (dynamicQuery && !!queryStr){
-				// dynamic query will be inserted into static query
-				if (queryStr.indexOf('$$') != -1){
-					query = queryStr.replace('$$', dynamicQuery);
-				// static query will be added to dynamic query
-				} else {
-					query = dynamicQuery + ' ' + queryStr;
-				}
-			} else {
-				// use dynamic query
-				query = dynamicQuery;
-			}
-		}
-		// there is only fixed query
-		else if (!!queryStr){
-			query = queryStr;				
-		}
-		return query;
-	}
-	
-	function prepareQuery(matchedElements) {
-		var query = '';
-		if (matchedElements.size() === 0){
-			console.log('There is not elements maching given selector. ');
-			return null;
-		} else if (matchedElements.size() == 1){
-			query = matchedElements.text();
-		} else {
-			query += '(';
-			matchedElements.each(function(i){
-				query += '(' + PSNC.chcontext.jQuery(this).text() + ')';
-				if (i < matchedElements.size() - 1){
-					query += ' OR ';
-				}
-				});
-			query += ')';
-		}
-		return query;
-	}
-
 	function main() {
 		PSNC.chcontext.jQuery(document).ready(function($) {
 			// load css
@@ -145,94 +153,105 @@ PSNC.chcontext.DEFAULT_RESULT_COUNT = 5;
 			PSNC.chcontext.jQuery(".chcontext-widget-wrapper").each(function(i, container) {
 				if(!PSNC.chcontext.jQuery(container).data("init-disabled"))
 				{
-					var children = $(container).children();
-					var self = container;
-					$(self).hide();
-					var query = getQuery($, container);
-					if (typeof query !== 'undefined' && query !== null) {
-	
-						//- pobrać wyniki wyszukiwania ze źródła 
-	
-						var dataHandler = function(data) {
-							if (typeof data.numFound !== 'undefined' && data.numFound > 0) {
-								var locale = PSNC.chcontext.jQuery(container).data("locale");
-								var labels = prepareLabels($, locale);
-								var showImg;
-								if (PSNC.chcontext.jQuery(container).data("show-img") === false)
-									showImg = false;
-								else
-									showImg = true; // images are displayed by default
-								var widgetContainer = $(".chcontext-widget-container:first", container);
-								var defineContainer = !($(widgetContainer)[0]);
-								var result = prepareHTML($, data, labels, showImg,defineContainer);
-								if(!defineContainer){
-									widgetContainer.html(result);
-								}
-								else $(self).append(result);
-								$(self).show();
-	
-								handleTooltips($, container, labels);
-							} else {
-								console.log("There is no result in obtained data from service");
-							}
-						};
-						var service;
-	
-						var customSearchProvider = PSNC.chcontext.jQuery(container).data("customsearchprovider");
-						if (typeof customSearchProvider !== 'undefined') {
-							// create custom search provider specified and (hopefully) defined by user
-							var customSearchProviderType = window[customSearchProvider];
-							if (customSearchProviderType instanceof Function) {
-								service = new customSearchProviderType(dataHandler);
-							} else {
-								console.error("Custom search provider not defined properly: " + customSearchProvider);
-							}
-						} else {
-							// create our own search provider
-							var searchProviderName = PSNC.chcontext.jQuery(container).data("searchprovider");
-							var apiKey = PSNC.chcontext.jQuery(container).data("apikey");
-							var serviceType = getSearchServiceByName(searchProviderName);
-							if (serviceType instanceof Function) {
-								service = new serviceType($, dataHandler, apiKey);
-							} else {
-								console.error("Search provider not existing: " + searchProviderName);
-							}
-						}
-	
-						var resultCount = PSNC.chcontext.jQuery(container).data("resultcount");
-						if (typeof resultCount === 'undefined') {
-							resultCount = PSNC.chcontext.DEFAULT_RESULT_COUNT;
-						}
-	
-						if (service !== undefined) {
-							service.search(query, resultCount);
-						} else {
-							console.log("Cannot create search provider service!");
-						}
-					}
+					PSNC.chcontext.refresh(container);
 				}
 			});
 		});
 	}
 
-	// search providers services:
-	var REQUEST_TIMEOUT = 5000;
+})();
+	
 
-	function getSearchServiceByName(searchProviderName) {
-		if (searchProviderName.toUpperCase() === 'FBC+') {
-			return FBCService;
-		} else if (searchProviderName.toUpperCase() === 'DPLA') {
-			return DPLAService;
-		} else if (searchProviderName.toUpperCase() === 'EUROPEANA') {
-			return EuropeanaService;
+
+PSNC.chcontext.getQuery = function(container) {
+	var queryStr = PSNC.chcontext.jQuery(container).data("query");
+	var selector = PSNC.chcontext.jQuery(container).data("queryselector");
+	var iframeselector = PSNC.chcontext.jQuery(container).data("iframe-selector");
+
+	if ( typeof selector === 'undefined' && typeof queryStr === 'undefined') {
+		console.error('CHContext configuration error. data-query or data-queryselector must be configured. ');
+		return null;
+	}
+	if ( typeof iframeselector !== 'undefined' && typeof selector === 'undefined') {
+		console.error('CHContext configuration error. data-selector is required when you want to use iframe selection. ');
+		return null;
+	}
+
+	var query;
+	var matchedElements;
+
+	if ( typeof iframeselector !== 'undefined') {
+		matchedElements = PSNC.chcontext.jQuery(iframeselector).contents().find(selector);
+	} else if ( typeof selector !== 'undefined') {
+		matchedElements = PSNC.chcontext.jQuery(selector);
+	}
+	// there is query from selector
+	if ( typeof matchedElements !== 'undefined') {
+		// prepare dynamic query from matched elements
+		var dynamicQuery = PSNC.chcontext.prepareQuery(matchedElements);
+		// moreover, there is static query
+		if (dynamicQuery && !!queryStr) {
+			// dynamic query will be inserted into static query
+			if (queryStr.indexOf('$$') != -1) {
+				query = queryStr.replace('$$', dynamicQuery);
+				// static query will be added to dynamic query
+			} else {
+				query = dynamicQuery + ' ' + queryStr;
+			}
+		} else {
+			// use dynamic query
+			query = dynamicQuery;
 		}
 	}
-
-	function ajaxErrorHandler(jqXHR, textStatus, errorThrown) {
-		console.error("cannot get results from service because of " + textStatus + "; " + errorThrown);
+	// there is only fixed query
+	else if (!!queryStr) {
+		query = queryStr;
 	}
+	return query;
+};
 
-	var FBCService = function($, dataHandler) {
+
+PSNC.chcontext.prepareQuery = function(matchedElements) {
+	var query = '';
+	if (matchedElements.size() === 0) {
+		console.log('There is not elements maching given selector. ');
+		return null;
+	} else if (matchedElements.size() == 1) {
+		query = matchedElements.text();
+	} else {
+		query += '(';
+		matchedElements.each(function(i) {
+			query += '(' + PSNC.chcontext.jQuery(this).text() + ')';
+			if (i < matchedElements.size() - 1) {
+				query += ' OR ';
+			}
+		});
+		query += ')';
+	}
+	return query;
+}; 
+
+
+	
+
+	// search providers services:
+	PSNC.chcontext.REQUEST_TIMEOUT = 5000;
+
+	PSNC.chcontext.getSearchServiceByName = function(searchProviderName) {
+		if (searchProviderName.toUpperCase() === 'FBC+') {
+			return PSNC.chcontext.FBCService;
+		} else if (searchProviderName.toUpperCase() === 'DPLA') {
+			return PSNC.chcontext.DPLAService;
+		} else if (searchProviderName.toUpperCase() === 'EUROPEANA') {
+			return PSNC.chcontext.EuropeanaService;
+		}
+	};
+
+	PSNC.chcontext.ajaxErrorHandler = function(jqXHR, textStatus, errorThrown) {
+		console.error("cannot get results from service because of " + textStatus + "; " + errorThrown);
+	};
+
+	PSNC.chcontext.FBCService = function($, dataHandler) {
 		// uri to api endpoint
 		var serviceUrl = 'http://beta.fbc.pionier.net.pl/';
 		var searchUrl = serviceUrl + 'index/select';
@@ -272,16 +291,16 @@ PSNC.chcontext.DEFAULT_RESULT_COUNT = 5;
 		this.search = function(searchString, maxNumberOfElements) {
 			$.ajax({
 				url: searchUrl + '?q=' + encodeURIComponent(searchString) + '&rows=' + maxNumberOfElements + '&fl=dc_title%2Cdcterms_alternative%2Cdc_creator%2Cdc_contributor%2Cid&wt=json&json.wrf=?',
-				timeout: REQUEST_TIMEOUT,
+				timeout: PSNC.chcontext.REQUEST_TIMEOUT,
 				dataType: 'json',
 				data: {},
-				error: ajaxErrorHandler,
+				error:  PSNC.chcontext.ajaxErrorHandler,
 				success: mapData
 			});
 		};
 	};
 
-	var EuropeanaService = function($, dataHandler, apiKey) {
+	PSNC.chcontext.EuropeanaService = function($, dataHandler, apiKey) {
 		// uri to api endpoint
 		var serviceUrl = 'http://europeana.eu/';
 		var searchUrl = serviceUrl + 'api/v2/search.json';
@@ -318,17 +337,17 @@ PSNC.chcontext.DEFAULT_RESULT_COUNT = 5;
 		this.search = function(searchString, maxNumberOfElements) {
 			$.ajax({
 				url: searchUrl + '?query=' + encodeURIComponent(searchString) + '&rows=' + maxNumberOfElements + '&profile=minimal&wskey=' + apiKey + '&callback=?',
-				timeout: REQUEST_TIMEOUT,
+				timeout: PSNC.chcontext.REQUEST_TIMEOUT,
 				searchString: searchString,
 				dataType: 'json',
 				data: {},
-				error: ajaxErrorHandler,
+				error: PSNC.chcontext.ajaxErrorHandler,
 				success: mapData
 			});
 		};
 	};
 
-	var DPLAService = function($, dataHandler, apiKey) {
+	PSNC.chcontext.DPLAService = function($, dataHandler, apiKey) {
 		// uri to api endpoint
 		var serviceUrl = 'http://dp.la/';
 		var searchUrl = 'http://api.dp.la/v2/items';
@@ -381,15 +400,15 @@ PSNC.chcontext.DEFAULT_RESULT_COUNT = 5;
 		};
 	};
 
-	function discoverLocale() {
+	PSNC.chcontext.discoverLocale = function() {
 		var loc = window.navigator.userLanguage || window.navigator.language;
 		if (!!loc)
 			return loc.split('-')[0];
-	}
+	};
 
-	var prepareLabels = function($, locale) {
+	PSNC.chcontext.prepareLabels = function($, locale) {
 		if (!locale) {
-			locale = discoverLocale();
+			locale = PSNC.chcontext.discoverLocale();
 			if (!locale) {
 				locale = PSNC.chcontext.defaultLocale;
 			}
@@ -401,13 +420,13 @@ PSNC.chcontext.DEFAULT_RESULT_COUNT = 5;
 			map = {};
 			var fields = ["seeMore", "poweredBy", "titleLabel", "authorLabel"];
 			$.each(fields, function(i, item) {
-				map[item] = htmlEncode((!!localeMap[item]) ? localeMap[item] : defaultMap[item]);
+				map[item] = PSNC.chcontext.htmlEncode((!!localeMap[item]) ? localeMap[item] : defaultMap[item]);
 			});
 		}
 		return map;
 	};
 
-	function handleTooltips($, container, labels) {
+	PSNC.chcontext.handleTooltips = function($, container, labels) {
 
 		var offset = 15;
 		var tooltipWidth;
@@ -471,9 +490,9 @@ PSNC.chcontext.DEFAULT_RESULT_COUNT = 5;
 		$('.chcontext-widget-container-result-container img').error(function() {
 			$(this).attr("data-img-error", "true");
 		});
-	}
+	};
 
-	function prepareHTML($, data, labels, showImg, defaineContainer) {
+	PSNC.chcontext.prepareHTML = function($, data, labels, showImg, defaineContainer) {
 		var seeMore = labels.seeMore;
 		var poweredBy = labels.poweredBy;
 
@@ -502,22 +521,22 @@ PSNC.chcontext.DEFAULT_RESULT_COUNT = 5;
 				if (showImg) {
 					html += '<div class="chcontext-widget-container-thumbnail-wrapper">';
 					html += '<a href="' + value.link + '" target="_blank" >';
-					html += '<img onerror="this.src=\'' + errorImg + '\';" src="' + htmlEncode(value.imgLink) + '" ></img>';
+					html += '<img onerror="this.src=\'' + errorImg + '\';" src="' + PSNC.chcontext.htmlEncode(value.imgLink) + '" ></img>';
 					html += '</a></div>';
 					html += '<div class="chcontext-widget-container-title-thumbnail">';
 				} else {
-					html += '<img style="display:none" onerror="this.src=\'' + errorImg + '\';" src="' + htmlEncode(value.imgLink) + '"></img>';
+					html += '<img style="display:none" onerror="this.src=\'' + errorImg + '\';" src="' + PSNC.chcontext.htmlEncode(value.imgLink) + '"></img>';
 					html += '<div class="chcontext-widget-container-title">';
 				}
 				html += '<a href="' + value.link + '" target="_blank" >';
-				html += htmlEncode(titleAndAuthor);
+				html += PSNC.chcontext.htmlEncode(titleAndAuthor);
 				html += '</div>';
 				html += '</a>';
 
 				if (!!value.title)
-					html += '<div id="title-value" style="display:none">' + htmlEncode(value.title) + '</div>';
+					html += '<div id="title-value" style="display:none">' + PSNC.chcontext.htmlEncode(value.title) + '</div>';
 				if (!!value.author)
-					html += '<div id="author-value" style="display:none">' + htmlEncode(value.author) + '</div>';
+					html += '<div id="author-value" style="display:none">' + PSNC.chcontext.htmlEncode(value.author) + '</div>';
 				html += '</div>';
 				html += '</li>';
 
@@ -525,17 +544,17 @@ PSNC.chcontext.DEFAULT_RESULT_COUNT = 5;
 			html += '</ol>';
 		}
 
-		html += '<div class="chcontext-widget-container-more"><a href="' + htmlEncode(data.resultsLink) + '" target="_blank" alt="' + seeMore + '" title="' + seeMore + '">' + seeMore + ' (' + data.numFound + ')</a></div>';
+		html += '<div class="chcontext-widget-container-more"><a href="' + PSNC.chcontext.htmlEncode(data.resultsLink) + '" target="_blank" alt="' + seeMore + '" title="' + seeMore + '">' + seeMore + ' (' + data.numFound + ')</a></div>';
 
 		if (!!data.dataProvider) {
 			html += '<div class="chcontext-widget-container-poweredBy">';
 
 			if (!!data.dataProvider.link)
-				html += '<a href="' + htmlEncode(data.dataProvider.link) + '" target="_blank">';
+				html += '<a href="' + PSNC.chcontext.htmlEncode(data.dataProvider.link) + '" target="_blank">';
 
 			if (!!data.dataProvider.img) {
-				var poweredByTitle = poweredBy + ((!!data.dataProvider.name) ? (': ' + htmlEncode(data.dataProvider.name)) : (''));
-				html += '<img src="' + htmlEncode(data.dataProvider.img) + '" title="' + poweredByTitle + '"/>';
+				var poweredByTitle = poweredBy + ((!!data.dataProvider.name) ? (': ' + PSNC.chcontext.htmlEncode(data.dataProvider.name)) : (''));
+				html += '<img src="' + PSNC.chcontext.htmlEncode(data.dataProvider.img) + '" title="' + poweredByTitle + '"/>';
 			}
 			if (!!data.dataProvider.link)
 				html += '</a>';
@@ -543,20 +562,18 @@ PSNC.chcontext.DEFAULT_RESULT_COUNT = 5;
 		}
 		html += defaineContainer? '</div>':'';
 		return html;
-	}
+	};
 	
 	/**
 	 * Escapes special chars from value so that it can be inserted into html.
 	 * @param {String} value
 	 * @returns escaped value
 	 */
-	function htmlEncode(value) {
+	PSNC.chcontext.htmlEncode = function(value) {
 		return String(value)
 				.replace(/&/g, '&amp;')
 				.replace(/"/g, '&quot;')
 				.replace(/'/g, '&#39;')
 				.replace(/</g, '&lt;')
 				.replace(/>/g, '&gt;');
-	}
-
-})();
+	};
