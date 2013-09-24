@@ -34,6 +34,7 @@
 		"grunt-base64": "~0.1.0",
 		"grunt-image-resize": "~0.2.0",
 		"grunt-include-replace": "~1.1.0",
-		"grunt-text-replace": "~0.3.6"
+		"grunt-text-replace": "~0.3.6",
+		"grunt-contrib-qunit": "~0.2.2"
 	}
 }

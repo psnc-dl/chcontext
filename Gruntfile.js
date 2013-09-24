@@ -99,6 +99,9 @@ module.exports = function(grunt) {
 				}
 			}
 		},
+		qunit: {
+			all: ['test/*.html']
+		}, 
 		clean: ['tmp', 'dist/style*.css'],
 		base64: {
 			prepare_data: {
@@ -128,6 +131,10 @@ module.exports = function(grunt) {
 			dist: {
 				files: ['<%= watch.js.files %>', '<%= watch.css.files %>'],
 				tasks: ['dist']
+			}, 
+			test: {
+				files: ['test/tests.html'],
+				tasks: ['test']
 			}
 		}
 	});
@@ -140,6 +147,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-imagemin');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-contrib-qunit');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-base64');
 	grunt.loadNpmTasks('grunt-image-resize');
@@ -150,6 +158,8 @@ module.exports = function(grunt) {
 
 	// Default task.
 	grunt.registerTask('default', ['jshint', 'csslint']);
+	
+	grunt.registerTask('test', ['qunit']);
 	
 	grunt.registerTask('dist', ['concat', 'replace', 'cssmin', 'uglify', 'includereplace', 'clean']);
 	

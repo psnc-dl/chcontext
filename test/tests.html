@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>QUnit tests</title>
+		<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.12.0.css">
+		<script src="http://code.jquery.com/qunit/qunit-1.12.0.js"></script>
+		<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+		<script src="../dist/chcontext.js"></script>
+		<script>
+			test("do not show header when there is no search results", function() {
+				equal($("#widget-without-results h1:first").is(":visible"), false);
+			});
+			test("show header when there are search results", function() {
+				equal($("#widget-with-results h1:first").is(":visible"), true);
+			});
+		</script>
+	</head>
+	<body>
+		<div id="qunit"></div>
+		<div id="qunit-fixture">
+			<div id="widget-without-results" class="chcontext-widget-wrapper" data-searchProvider="FBC+" data-query="querywithoutsearchresults" >
+				<h1>Widget header</h1>
+			</div>
+			<div id="widget-with-results" class="chcontext-widget-wrapper" data-searchProvider="FBC+" data-query="mickiewicz" >
+				<h1>Widget header</h1>
+			</div>
+		</div>
+	</body>
+</html>
