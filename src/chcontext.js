@@ -87,8 +87,6 @@ PSNC.chcontext.search = function(query, container) {
 
 
 PSNC.chcontext.refresh = function(container) {
-	// var children = PSNC.chcontext.jQuery(container).children();
-	// var self = container;
 	PSNC.chcontext.jQuery(container).hide();
 	var query = PSNC.chcontext.getQuery(container);
 	if ( typeof query !== 'undefined' && query !== null) {
@@ -145,9 +143,9 @@ PSNC.chcontext.refreshAll = function() {
 	}
 
 	function main() {
-		PSNC.chcontext.jQuery(document).ready(function($) {
+		PSNC.chcontext.jQuery(document).ready(function() {
 			// load css
-			$('<style type="text/css">' + "@@include('style.css')" + '</style>').appendTo("head");
+			PSNC.chcontext.jQuery('<style type="text/css">' + "@@include('style.css')" + '</style>').appendTo("head");
 
 			// iterate over all containers
 			PSNC.chcontext.jQuery(".chcontext-widget-wrapper").each(function(i, container) {
