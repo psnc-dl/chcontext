@@ -14,6 +14,15 @@
 			test("show header when there are search results", function() {
 				equal($("#widget-with-results h1:first").is(":visible"), true);
 			});
+			test("hide widget after refresh when no results are found", function() {
+				equal($("#widget-with-refresh").is(":visible"), true);
+				$("#widget-with-refresh").attr("data-query", "this is a really bad query");
+				PSNC.chcontext.refresh("#widget-with-refresh");
+				equal($("#widget-with-refresh").is(":visible"), false);
+			});
+			test("do not show results container when init is disabled", function() {
+				equal($("#widget-with-init-disabled .chcontext-widget-container").length, 0);
+			});
 		</script>
 	</head>
 	<body>
@@ -24,6 +33,11 @@
 			</div>
 			<div id="widget-with-results" class="chcontext-widget-wrapper" data-searchProvider="FBC+" data-query="mickiewicz" >
 				<h1>Widget header</h1>
+			</div>
+			<div id="widget-with-refresh" class="chcontext-widget-wrapper" data-searchProvider="FBC+" data-query="obraz" >
+				<h1>Widget header</h1>
+			</div>
+			<div id="widget-with-init-disabled" class="chcontext-widget-wrapper" data-searchProvider="FBC+" data-init-disabled="true" data-query="mickiewicz" >
 			</div>
 		</div>
 	</body>

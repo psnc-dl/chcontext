@@ -19,7 +19,7 @@ PSNC.chcontext.searchProviders = [
 ];
 
 
-PSNC.chcontext.jQuery;
+PSNC.chcontext.jQuery = {};
 PSNC.chcontext.defaultLocale = "en";
 PSNC.chcontext.DEFAULT_RESULT_COUNT = 5;
 
@@ -314,21 +314,27 @@ PSNC.chcontext.prepareQuery = function(matchedElements) {
 			result.dataProvider = dataProvider;
 			result.resultsLink = searchResultUrl + encodeURIComponent(this.searchString);
 			result.numFound = rawData.totalResults;
-			result.results = $.map(rawData.items, function(doc, i) {
-				var title = doc.title;
-				if (title !== undefined && title instanceof Array) {
-					title = title[0];
-				}
-				var author = doc.dcCreator;
-				if (author !== undefined && author instanceof Array) {
-					author = author[0];
-				}
-				return {
-					link: doc.guid,
-					imgLink: doc.edmPreview,
-					title: title,
-					author: author};
-			});
+			if (rawData.items === undefined) {
+				result.results = [];
+			} else {
+				result.results = $.map(rawData.items, function(doc, i) {
+					var title = doc.title;
+					if (title !== undefined && title instanceof Array) {
+						title = title[0];
+					}
+					var author = doc.dcCreator;
+					if (author !== undefined && author instanceof Array) {
+						author = author[0];
+					}
+					return {
+						link : doc.guid,
+						imgLink : doc.edmPreview,
+						title : title,
+						author : author
+					};
+				});
+			}
+
 			dataHandler(result);
 		};
 

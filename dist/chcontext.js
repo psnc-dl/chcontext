@@ -22,7 +22,7 @@
  * See the Licence for the specific language governing
  * permissions and limitations under the Licence.
  *
- * Date: 2013-09-24
+ * Date: 2013-09-25
  */
 var PSNC = PSNC || {};
 PSNC.chcontext = PSNC.chcontext || {};
@@ -431,21 +431,27 @@ PSNC.chcontext.prepareQuery = function(matchedElements) {
 			result.dataProvider = dataProvider;
 			result.resultsLink = searchResultUrl + encodeURIComponent(this.searchString);
 			result.numFound = rawData.totalResults;
-			result.results = $.map(rawData.items, function(doc, i) {
-				var title = doc.title;
-				if (title !== undefined && title instanceof Array) {
-					title = title[0];
-				}
-				var author = doc.dcCreator;
-				if (author !== undefined && author instanceof Array) {
-					author = author[0];
-				}
-				return {
-					link: doc.guid,
-					imgLink: doc.edmPreview,
-					title: title,
-					author: author};
-			});
+			if (rawData.items === undefined) {
+				result.results = [];
+			} else {
+				result.results = $.map(rawData.items, function(doc, i) {
+					var title = doc.title;
+					if (title !== undefined && title instanceof Array) {
+						title = title[0];
+					}
+					var author = doc.dcCreator;
+					if (author !== undefined && author instanceof Array) {
+						author = author[0];
+					}
+					return {
+						link : doc.guid,
+						imgLink : doc.edmPreview,
+						title : title,
+						author : author
+					};
+				});
+			}
+
 			dataHandler(result);
 		};
 
