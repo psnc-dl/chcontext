@@ -6,13 +6,25 @@
 		<script type="text/javascript" src="frmap.js"></script>
 		<link rel="stylesheet" href="sample.css" type="text/css" />
 		<title>Examples</title>
+		<script>
+			function doRefresh(){
+				var query = PSNC.chcontext.jQuery("#input1").val();
+				if (!!query) {
+					PSNC.chcontext.jQuery("#widget1").attr("data-query", query);
+					PSNC.chcontext.refresh(PSNC.chcontext.jQuery("#widget1"));
+				}
+				}
+		</script>
 	</head>
 	<body>
-		<h1>Examples</h1>
-		<h3>1. query = obraz, locale = fr</h3>
-		final query: obraz
-		<div id="widget1" class="chcontext-widget-wrapper" data-searchProvider="FBC+" data-query="obraz" data-init-disabled="true" data-locale="fr">
-		</div>
+		<h1>Initial value: picture</h1>
+		<div></div>
+		<input type="text" id="input1" value="picture">
+		<button onclick="doRefresh();">
+			Refresh!
+		</button></div>
+		</br></br></br>
+		<div id="widget1" class="chcontext-widget-wrapper" data-searchProvider="FBC+" data-query="picture" data-locale="en"></div>
 	</body>
 </html>
 
