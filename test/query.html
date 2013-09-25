@@ -16,6 +16,8 @@
 				equal(PSNC.chcontext.getQuery($("#widget-q3")), "((painting) OR (sculpture))");
 				equal(PSNC.chcontext.getQuery($("#widget-q4")), "Books music");
 				equal(PSNC.chcontext.getQuery($("#widget-q5")), "type:Books OR paintings");
+				equal(PSNC.chcontext.getQuery($("#widget-q6")), "Books");
+				equal(PSNC.chcontext.getQuery($("#widget-q7")), "type:Books OR paintings");
 			});
 		</script>
 	</head>
@@ -24,12 +26,14 @@
 		<div id="qunit-fixture">
 			<div id="header">Books</div>
 			<div id="tags"><a href="#">painting</a><a href="#">sculpture</a></div>
-			<iframe id="iframeid" src="../example/iframe.html"></iframe>
+			<iframe id="iframeid" src="resources/iframe.html"></iframe>
 			<div id="widget-q1" class="chcontext-widget-wrapper" data-searchProvider="FBC+" data-query="book" ></div>
 			<div id="widget-q2" class="chcontext-widget-wrapper" data-searchProvider="FBC+" data-queryselector="#header" ></div>
 			<div id="widget-q3" class="chcontext-widget-wrapper" data-searchProvider="FBC+" data-queryselector="#tags a" ></div>
 			<div id="widget-q4" class="chcontext-widget-wrapper" data-searchProvider="FBC+" data-queryselector="#header" data-query="music"></div>
 			<div id="widget-q5" class="chcontext-widget-wrapper" data-searchProvider="FBC+" data-queryselector="#header" data-query="type:$$ OR paintings"></div>
+			<div id="widget-q6" class="chcontext-widget-wrapper" data-iframe-selector="#iframeid:first" data-searchProvider="FBC+" data-queryselector="h1:first" ></div>
+			<div id="widget-q7" class="chcontext-widget-wrapper" data-iframe-selector="#iframeid:first" data-searchProvider="FBC+" data-queryselector="h1:first" data-query="type:$$ OR paintings"></div>
 		</div>
 	</body>
 </html>
