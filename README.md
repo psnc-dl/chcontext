@@ -67,7 +67,7 @@ Widget main `div` tag can have the following configuration parameters:
 * `data-resultCount` - Maximum number of results to be displayed. Default value is 5.
 * `data-apikey` - API key. Required to access results from [Europeana](http://europeana.eu/portal/api/registration.html) or [DPLA](http://dp.la/info/developers/codex/policies/#get-a-key).
 * `data-show-img` - Whether images should be displayed next to the results.
-
+* `data-init-disabled` - (optional) disable running search on page load.
 **Notice:**
 * One of `data-searchProvider` or `data-customSearchProvider` parameters has to be defined. If both are defined widget uses data-customSearchProvider.
 * One of `data-query` or `data-queryselector` parameters has to be defined. Please read [how the queries are built](#building-queries) if both are parameters are defined.
@@ -81,7 +81,9 @@ Widget main `div` tag can have the following configuration parameters:
  * if `data-query="painting AND creator:$$` and  `data-queryselector="h1"` where `h1` DOM element text is `Monet` then the resulting query is `painting AND creator:Monet`.
  * try out [working example (#3)](example/example1.html). Please use [GitHub HTML Preview](http://htmlpreview.github.io/) to render this HTML.
 
-### 3. Style the widget  (optionally)
+## Customize
+
+### Style the widget
 
 You can change the look of the widget using CSS. First check [the default style](src/style.css) to find out what classes you should use. Then use inline styling in `div` element:
 ````html
@@ -91,7 +93,7 @@ You can change the look of the widget using CSS. First check [the default style]
 or include separate css file. Try out [working example](example/example1.html). (Please use [GitHub HTML Preview](http://htmlpreview.github.io/) to render this HTML.)
 
 
-### 4. Customize the widget language  (optionally)
+### Add new language 
 Currently only English and Polish are supported. To use widget with other language you have to 
 
 * Define JavaScript map containing labels in your language. This map should be defined in separate JS file or inside of `<script type="text/javascript">` tag.
@@ -110,15 +112,26 @@ Currently only English and Polish are supported. To use widget with other langua
 * Define `data-locale` parameter. It should be equal to `your_language_name` from the JS code.
 * You can try out [working example](example/example1.html) (please use [GitHub HTML Preview](http://htmlpreview.github.io/) to render this HTML).
 
-### 5. Add custom search provider (optionally)
+### Add custom search provider 
 * Define JavaScript object with your implentation of `search` function. 
 * `search` function should return results object. Structure of this object can be found [here](test/data.json).
 * Define `data-customSearchProvider` parameter. It should conatain the name of your search provider object.
 
 Try out [working example](example/exampleCustomSearchProvider.html) (please use [GitHub HTML Preview](http://htmlpreview.github.io/) to render this HTML).
 
-## Release notes
 
+###Refresh search results on demand
+The default behaviour is to run search when jQuery `$( document ).ready()` event occurs. It is also possible to manually call the search action. To do so please use `PSNC.chcsearch.refresh` method. You shoud pass jQuery object pointing to the widget you wish to refresh as an argument. 
+
+Try out [working example](example/example3) (please use [GitHub HTML Preview](http://htmlpreview.github.io/) to render this HTML). 
+
+In this example search for query=`picture` is run on page load. You can rerun search with different query string by typing it into input box and clicking `Refresh!` button. 
+JavaScript code changes the `data-query` attribute of widget `div` element and then calls `PSNC.chcsearch.refresh` method.
+
+
+You can also disable running search on page load by setting `data-init-disabled` to `true` and calling `PSNC.chcsearch.refresh` method manually instead.
+
+## Release notes
 ### 1.1.0
 * Query can be parameterized with `$$`, which will be replaced by text indicated by a query selector. 
 
