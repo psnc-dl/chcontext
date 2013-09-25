@@ -161,7 +161,7 @@ module.exports = function(grunt) {
 	
 	grunt.registerTask('test', ['qunit']);
 	
-	grunt.registerTask('dist', ['concat', 'replace', 'cssmin', 'uglify', 'includereplace', 'clean']);
+	grunt.registerTask('dist', ['default', 'concat', 'replace', 'cssmin', 'uglify', 'includereplace', 'clean', 'test']);
 	
 	grunt.registerTask('prepare_logo', ['image_resize', 'imagemin']);
 	
