@@ -131,6 +131,14 @@ JavaScript code changes the `data-query` attribute of widget `div` element and t
 
 You can also disable running search on page load by setting `data-init-disabled` to `true` and calling `PSNC.chcsearch.refresh` method manually instead.
 
+##Sites Using the Widget
+
+<!-- * http://gkchesterton.pl/ - site about life of Gilbert Keith Chesterton-->
+
+[Check out](https://github.com/psnc-dl/wp-chcontext/wiki/Sites-Using-the-Widget) sites using [WP-CHContext](https://github.com/psnc-dl/wp-chcontext) (our widget as a Wordpress plugin).
+
+[Let us know](http://dl.psnc.pl/contact/) if you are using the widget :)
+
 ## Release notes
 ### 1.1.0
 * Query can be parameterized with `$$`, which will be replaced by text indicated by a query selector. 
