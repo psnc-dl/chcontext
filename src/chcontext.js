@@ -32,7 +32,7 @@ PSNC.chcontext.search = function(query, container) {
 			var labels = PSNC.chcontext.prepareLabels(PSNC.chcontext.jQuery, locale);
 			var showImg;
 			// images are displayed by default
-			if (PSNC.chcontext.jQuery(container).attr("data-show-img") === false)
+			if (PSNC.chcontext.jQuery(container).attr("data-show-img") === "false")
 				showImg = false;
 			else
 				showImg = true;
@@ -149,7 +149,7 @@ PSNC.chcontext.refreshAll = function() {
 
 			// iterate over all containers
 			PSNC.chcontext.jQuery(".chcontext-widget-wrapper").each(function(i, container) {
-				if(!PSNC.chcontext.jQuery(container).attr("data-init-disabled"))
+				if(PSNC.chcontext.jQuery(container).attr("data-init-disabled")!=='true')
 				{
 					PSNC.chcontext.refresh(container);
 				}

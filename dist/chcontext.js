@@ -22,7 +22,7 @@
  * See the Licence for the specific language governing
  * permissions and limitations under the Licence.
  *
- * Date: 2013-09-25
+ * Date: 2013-10-01
  */
 var PSNC = PSNC || {};
 PSNC.chcontext = PSNC.chcontext || {};
@@ -45,7 +45,7 @@ PSNC.chcontext.searchProviders = [
 ];
 
 
-PSNC.chcontext.jQuery;
+PSNC.chcontext.jQuery = {};
 PSNC.chcontext.defaultLocale = "en";
 PSNC.chcontext.DEFAULT_RESULT_COUNT = 5;
 
@@ -58,7 +58,7 @@ PSNC.chcontext.search = function(query, container) {
 			var labels = PSNC.chcontext.prepareLabels(PSNC.chcontext.jQuery, locale);
 			var showImg;
 			// images are displayed by default
-			if (PSNC.chcontext.jQuery(container).attr("data-show-img") === false)
+			if (PSNC.chcontext.jQuery(container).attr("data-show-img") === "false")
 				showImg = false;
 			else
 				showImg = true;
@@ -266,7 +266,7 @@ PSNC.chcontext.refreshAll = function() {
 
 			// iterate over all containers
 			PSNC.chcontext.jQuery(".chcontext-widget-wrapper").each(function(i, container) {
-				if(!PSNC.chcontext.jQuery(container).attr("data-init-disabled"))
+				if(PSNC.chcontext.jQuery(container).attr("data-init-disabled")!=='true')
 				{
 					PSNC.chcontext.refresh(container);
 				}

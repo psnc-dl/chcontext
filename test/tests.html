@@ -23,6 +23,16 @@
 			test("do not show results container when init is disabled", function() {
 				equal($("#widget-with-init-disabled .chcontext-widget-container").length, 0);
 			});
+			test("do not show images when show-img=false", function() {
+				equal($("#widget-with-without-img .chcontext-widget-container .chcontext-widget-container-thumbnail-wrapper").length, 0);
+			});
+			test("show images when show-img=true", function() {
+				notEqual($("#widget-with-with-show-img .chcontext-widget-container .chcontext-widget-container-thumbnail-wrapper").length, 0);
+			});
+			test("show images by default", function() {
+				notEqual($("#widget-with-img .chcontext-widget-container .chcontext-widget-container-thumbnail-wrapper").length, 0);
+			});
+			
 		</script>
 	</head>
 	<body>
@@ -38,6 +48,12 @@
 				<h1>Widget header</h1>
 			</div>
 			<div id="widget-with-init-disabled" class="chcontext-widget-wrapper" data-searchProvider="FBC+" data-init-disabled="true" data-query="mickiewicz" >
+			</div>
+			<div id="widget-with-without-img" class="chcontext-widget-wrapper" data-searchProvider="FBC+" data-show-img="false" data-query="mickiewicz" >
+			</div>
+			<div id="widget-with-with-show-img" class="chcontext-widget-wrapper" data-searchProvider="FBC+" data-show-img="true" data-query="mickiewicz" >
+			</div>
+			<div id="widget-with-img" class="chcontext-widget-wrapper" data-searchProvider="FBC+" data-query="mickiewicz" >
 			</div>
 		</div>
 	</body>
