@@ -18,7 +18,10 @@ module.exports = function(grunt) {
 			},
 		},
 		csslint: {
-			src: ['src/*.css']
+			src: ['src/*.css'],
+			options: {
+				"important": false
+			}
 		},
 		image_resize: {
 			resize: {				
