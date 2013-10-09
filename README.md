@@ -140,6 +140,13 @@ You can also disable running search on page load by setting `data-init-disabled`
 [Let us know](http://dl.psnc.pl/contact/) if you are using the widget :)
 
 ## Release notes
+
+### 1.2.0
+* Added method allowing to refresh results on demand. 
+* Added option to disable running search on page load. 
+* Introduced unit tests. 
+* Updated CSS styles - size of an image on the results list should no longer be overrided by other styles. 
+
 ### 1.1.0
 * Query can be parameterized with `$$`, which will be replaced by text indicated by a query selector. 
 
