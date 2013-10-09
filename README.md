@@ -34,9 +34,9 @@ Licensed under the EUPL, Version 1.1 or – as soon they will be approved by the
  * We recommend you to use JsDelivr CDN files: 
 
  ````html
- <script type="text/javascript" src="http://cdn.jsdelivr.net/chcontext/1.1.0/chcontext.min.js"></script>
+ <script type="text/javascript" src="http://cdn.jsdelivr.net/chcontext/1.2.0/chcontext.min.js"></script>
  ````
- * or download [chcontext.min.js](http://cdn.jsdelivr.net/chcontext/1.1.0/chcontext.min.js), add it to your project and include it in your html using appropriate path.
+ * or download [chcontext.min.js](http://cdn.jsdelivr.net/chcontext/1.2.0/chcontext.min.js), add it to your project and include it in your html using appropriate path.
 
  ````html
  <script type="text/javascript" src="$PATH/chcontext.min.js"></script>
