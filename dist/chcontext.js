@@ -1,5 +1,5 @@
 /*!
- * CHContext v1.1.0
+ * CHContext v1.2.0
  * https://github.com/psnc-dl/chcontext
  *
  * Copyright 2013 Poznań Supercomputer and Networking Center
@@ -22,7 +22,7 @@
  * See the Licence for the specific language governing
  * permissions and limitations under the Licence.
  *
- * Date: 2013-10-01
+ * Date: 2013-10-09
  */
 var PSNC = PSNC || {};
 PSNC.chcontext = PSNC.chcontext || {};
@@ -207,8 +207,8 @@ PSNC.chcontext.refreshAll = function() {
 }\
 \
 .chcontext-widget-container-thumbnail-wrapper img {\
-	max-width: 100%;\
-	max-height: 100%;\
+	max-width: 100% !important;\
+	max-height: 100% !important;\
 }\
 \
 .chcontext-widget-container-more {\
