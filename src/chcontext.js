@@ -4,13 +4,15 @@ PSNC.chcontext.pl = {
 	"seeMore": "Więcej wyników",
 	"poweredBy": "Dostarczone przez",
 	"titleLabel": "Tytuł",
-	"authorLabel": "Autor"
+	"authorLabel": "Autor",
+	"dateLabel": "Data"
 };
 PSNC.chcontext.en = {
 	"seeMore": "See more results",
 	"poweredBy": "Powered by",
 	"titleLabel": "Title",
-	"authorLabel": "Author"
+	"authorLabel": "Author",
+	"dateLabel": "Date"
 };
 PSNC.chcontext.searchProviders = [
 	{name:"Europeana", "requiresKey":true},
@@ -31,20 +33,27 @@ PSNC.chcontext.search = function(query, container) {
 			var locale = PSNC.chcontext.jQuery(container).attr("data-locale");
 			var labels = PSNC.chcontext.prepareLabels(PSNC.chcontext.jQuery, locale);
 			var showImg;
+			var showDate;
 			// images are displayed by default
 			if (PSNC.chcontext.jQuery(container).attr("data-show-img") === "false")
 				showImg = false;
 			else
 				showImg = true;
+
+			//Show date is false by default!
+			if (PSNC.chcontext.jQuery(container).attr("data-show-date") === "true")
+				showDate = true;
+			else
+				showDate = false;
+
 			var widgetContainer = PSNC.chcontext.jQuery(".chcontext-widget-container:first", container);
 			var defineContainer = !(PSNC.chcontext.jQuery(widgetContainer)[0]);
-			var result = PSNC.chcontext.prepareHTML(PSNC.chcontext.jQuery, data, labels, showImg, defineContainer);
+			var result = PSNC.chcontext.prepareHTML(PSNC.chcontext.jQuery, data, labels, showImg, showDate, defineContainer);
 			if (!defineContainer) {
 				widgetContainer.html(result);
 			} else
 				PSNC.chcontext.jQuery(container).append(result);
 			PSNC.chcontext.jQuery(container).show();
-
 			PSNC.chcontext.handleTooltips(PSNC.chcontext.jQuery, container, labels);
 		} else {
 			console.log("There is no result in obtained data from service");
@@ -277,18 +286,24 @@ PSNC.chcontext.prepareQuery = function(matchedElements) {
 				if (author !== undefined && author instanceof Array) {
 					author = author[0];
 				}
+				var date = doc.dc_date;
+				if (date !== undefined && date instanceof Array) {
+					date = date[0];
+				}
 				return {
 					link: resourceUrl + doc.id,
 					imgLink: thumbnailUrl + doc.id,
 					title: title,
-					author: author};
+					author: author,
+					date: date
+				};
 			});
 			dataHandler(result);
 		};
 
 		this.search = function(searchString, maxNumberOfElements) {
 			$.ajax({
-				url: searchUrl + '?q=' + encodeURIComponent(searchString) + '&rows=' + maxNumberOfElements + '&fl=dc_title%2Cdcterms_alternative%2Cdc_creator%2Cdc_contributor%2Cid&wt=json&json.wrf=?',
+				url: searchUrl + '?q=' + encodeURIComponent(searchString) + '&rows=' + maxNumberOfElements + '&fl=dc_title%2Cdcterms_alternative%2Cdc_creator%2Cdc_contributor%2Cid%2Cdc_date&wt=json&json.wrf=?',
 				timeout: PSNC.chcontext.REQUEST_TIMEOUT,
 				dataType: 'json',
 				data: {},
@@ -422,7 +437,7 @@ PSNC.chcontext.prepareQuery = function(matchedElements) {
 		var map = defaultMap;
 		if (!!localeMap) {
 			map = {};
-			var fields = ["seeMore", "poweredBy", "titleLabel", "authorLabel"];
+			var fields = ["seeMore", "poweredBy", "titleLabel", "authorLabel", "dateLabel"];
 			$.each(fields, function(i, item) {
 				map[item] = PSNC.chcontext.htmlEncode((!!localeMap[item]) ? localeMap[item] : defaultMap[item]);
 			});
@@ -456,6 +471,7 @@ PSNC.chcontext.prepareQuery = function(matchedElements) {
 			var img = $("img", this);
 			var title = $(this).find("#title-value").html();
 			var author = $(this).find("#author-value").html();
+			var date = $(this).find("#date-value").html();
 			var error = img.attr("data-img-error");
 			var code = "";
 
@@ -464,7 +480,7 @@ PSNC.chcontext.prepareQuery = function(matchedElements) {
 				code += '<div class="chcontext-widget-container-tooltip-box-left"><img src="' + img.attr("src") + '" alt="' + img.attr("src") + '"/></div>';
 			}
 
-			if (!!title || !!author) {
+			if (!!title || !!author || !!date) {
 				code += '<div class="chcontext-widget-container-tooltip-box-right">';
 				if (!!title) {
 					code += '<div>';
@@ -476,6 +492,12 @@ PSNC.chcontext.prepareQuery = function(matchedElements) {
 					code += '<div>';
 					code += (!!labels.authorLabel) ? ('<span class="chcontext-widget-container-tooltip-box-label">' + labels.authorLabel + ': </span>') : '';
 					code += author;
+					code += '</div>';
+				}
+				if (!!date) {
+					code += '<div>';
+					code += (!!labels.dateLabel) ? ('<span class="chcontext-widget-container-tooltip-box-label">' + labels.dateLabel + ': </span>') : '';
+					code += date;
 					code += '</div>';
 				}
 				code += '</div>';
@@ -496,14 +518,14 @@ PSNC.chcontext.prepareQuery = function(matchedElements) {
 		});
 	};
 
-	PSNC.chcontext.prepareHTML = function($, data, labels, showImg, defaineContainer) {
+	PSNC.chcontext.prepareHTML = function($, data, labels, showImg, showDate, defineContainer) {
 		var seeMore = labels.seeMore;
 		var poweredBy = labels.poweredBy;
 
 		var errorImg = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAvdJREFUeNq0V9GLTFEY/75z74qo5T+wXtSGhJBENEQrZhYRtbQpRZuEhOyueZAHeZE3SfIitU1bmwc8yIOSByUPXqx3D5T1sDP3nOP77jl3utPMXPvdO3umrzP3zp1zfuf3/b7vfh9aa4EHIvbVpqd/amP6rTHg7vZmIJtSANbOHK1UynQZJfuGqeeWa637h8tlWKwxVasN0bSM7E9yLw1gSYLq++wPZqRnG/O6awZWg19/aTcAKdoxBuAwFAFigff050rWb1kw7PS3IFCgFBtCQCh4lg5jLGjamWdE0/W5jgDc6WlzAvH4zTcChCIe+KRaWzhXWkunN5nuzATAdvHgIAFhACghHjSdvB6Z5jpCACr+kyJ79OorhIECiSbZ55E2cH7/oAegFgrA5wTlUZONDa2HkGNY6IOIckmTAdUu884A/O9BogGyhzNfYgBiBgjAhQPrwGDKeXahLkgYoPnykY1eA0IRkgbmGxrQImSl1UwRsgYe1D6TBuQijCgKxg5t+G9CyxQhO+/q8GbHgMAHnPGaDGAX7hfKwP2pT3EUSAdHwaXDm/IxEKBTPQO4fmyrC0OhBhhAnRhQMQBpHvCpl9Hfe/nRaUDoAtbAlcoW78ocIkzmmye2exfIOEgYyCfChAE6+d0XH3K74NrxbS4MIS8D9Ll9eqerZoQIuKqar0f5GFA+e/FruPr8PfQFgRhAQ2u4cXIHBAYzy7vuYegZmBjZDYDyMCQKoJGXAZeIeN8A7jx75zUgzYQGbp3aRRqAnKnY637izN6cZRllw0bkgIvDMD6xjefJp29jDUjfhqyB8ZE94BSA0kzo3mAsxsmzpQI1qYE4gPOUZP4LjD95DWGo5JmQipHqaKlZ2IgBWM9ldXRfIQZAVBP6B7kkj5uIos0JcmlvWxhtyzktF0q1u6FoX5haJ71+Rwbo0Tnq31aYdDvTGxQuuyLOtf2U6o5X0jRAtqpgP5b1jvpFNkv2u7lvuj3nDpmbVFi8USf7S9ZI9v0nwABB+xJ9xtGl5QAAAABJRU5ErkJggg==";
 		var html = "";
 
-		html += defaineContainer? '<div class="chcontext-widget-container">':'';
+		html += defineContainer? '<div class="chcontext-widget-container">':'';
 		if (!!data.results && data.results.length > 0) {
 			html += '<ol>';
 			$.each(data.results, function(key, value) {
@@ -536,11 +558,17 @@ PSNC.chcontext.prepareQuery = function(matchedElements) {
 				html += PSNC.chcontext.htmlEncode(titleAndAuthor);
 				html += '</div>';
 				html += '</a>';
+				if(!!showDate && !!value.date){
+					html += '<div class="with-date">' + PSNC.chcontext.htmlEncode(value.date) + '</div>';
+				}
 
 				if (!!value.title)
 					html += '<div id="title-value" style="display:none">' + PSNC.chcontext.htmlEncode(value.title) + '</div>';
 				if (!!value.author)
 					html += '<div id="author-value" style="display:none">' + PSNC.chcontext.htmlEncode(value.author) + '</div>';
+				if(!!showDate && !!value.date){
+					html += '<div id="date-value" style="display:none">' + PSNC.chcontext.htmlEncode(value.date) + '</div>';
+				}
 				html += '</div>';
 				html += '</li>';
 
@@ -564,7 +592,7 @@ PSNC.chcontext.prepareQuery = function(matchedElements) {
 				html += '</a>';
 			html += '</div>';
 		}
-		html += defaineContainer? '</div>':'';
+		html += defineContainer? '</div>':'';
 		return html;
 	};
 	

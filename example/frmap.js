@@ -4,5 +4,6 @@ PSNC.chcontext.fr = {
 	"seeMore" : "voir plus",
 	"poweredBy" : "fourni par",
 	"titleLabel" : "Titre",
-	"authorLabel" : "Auteur"
+	"authorLabel" : "Auteur",
+	"dateLabel" : "Date"
 };

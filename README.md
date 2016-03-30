@@ -104,7 +104,8 @@ Currently only English and Polish are supported. To use widget with other langua
     "seeMore" : "your text for see more results",
     "poweredBy" : "yout text for powered by",
     "titleLabel" : "your text for title",
-    "authorLabel" : "your text for author"
+    "authorLabel" : "your text for author",
+    "dateLabel" : "your text for date"
     };
 ```
 **First two lines shoud not be removed!** You have to define 4 labels: `seeMore`,`poweredBy`,`titleLabel`,`authorLabel`. If label is not defined, label in default language is used instead.
