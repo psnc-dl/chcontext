@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Chcontext by psnc-dl</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Chcontext</h1>
+      <h2 class="project-tagline">Web widget for searching objects of cultural heritage. </h2>
+      <a href="https://github.com/psnc-dl/chcontext" class="btn">View on GitHub</a>
+      <a href="https://github.com/psnc-dl/chcontext/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/psnc-dl/chcontext/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="chcontext" class="anchor" href="#chcontext" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>CHContext</h1>
+
+<p>CHContext is a JavaScript-based widget that is able to provide a list of links to cultural heritage materials based on predefined item of a website on which it is embedded (via given JQuery HTML selector).</p>
+
+<p>Potential use scenarios include:</p>
+
+<ul>
+<li>enrichment of a library catalogue website - beside being able to read the item (e.g. a book) description, you also get links to digitized copies of this item or items created by the same author</li>
+<li>enrichment of a heritage-related blog - you easily can provide links to materials related to each blog post (we also made <a href="https://github.com/psnc-dl/wp-chcontext/wiki/CHContext-WordPress-Plugin-Description">a WordPress plugin for that</a>!)</li>
+</ul>
+
+<p>The plugin supports three data sources:</p>
+
+<ul>
+<li>
+<a href="http://europeana.eu/">Europeana</a> (with API key)</li>
+<li>
+<a href="http://dp.la/">Digital Public Library of America</a> (with API key)</li>
+<li>
+<a href="http://fbc.pionier.net.pl/">Polish Digital Libraries Federation</a> (without API key)</li>
+</ul>
+
+<p>There is also possibility to define your own data provider(s). The widget look is customizable via CSS.</p>
+
+<h2>
+<a id="acknowledgments" class="anchor" href="#acknowledgments" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Acknowledgments</h2>
+
+<p>The widget is developed by <a href="http://dl.psnc.pl/">Digital Libraries Team</a> of <a href="http://www.man.poznan.pl/">Poznań Supercomputing and Networking Center</a>.</p>
+
+<p><strong>Feel free <a href="http://dl.psnc.pl/contact/">to contact us</a> in case of any questions.</strong></p>
+
+<p>This project was initiated and partially funded as a part of the <a href="http://pro.europeana.eu/web/europeana-awareness">Europeana Awareness</a> project, financed under the ICT Policy Support Programme (ICT PSP) as part of the Competitiveness and Innovation Framework Programme by the European Community.</p>
+
+<h2>
+<a id="licence" class="anchor" href="#licence" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Licence</h2>
+
+<p>Copyright (c) 2013 Poznań Supercomputing and Networking Center<br>
+Licensed under the EUPL, Version 1.1 or – as soon they will be approved by the European Commission - subsequent versions of the EUPL (the "Licence"). </p>
+
+<p><a href="LICENCE">The full licence text</a>.</p>
+
+<h2>
+<a id="how-to-use-it" class="anchor" href="#how-to-use-it" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How to use it</h2>
+
+<h3>
+<a id="1-install-the-widget" class="anchor" href="#1-install-the-widget" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1. Install the widget</h3>
+
+<ol>
+<li>
+<p>Add chcontext to your project</p>
+
+<ul>
+<li>We recommend you to use JsDelivr CDN files: </li>
+</ul>
+
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/javascript<span class="pl-pds">"</span></span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>http://cdn.jsdelivr.net/chcontext/1.2.0/chcontext.min.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre></div>
+
+<ul>
+<li>or download <a href="http://cdn.jsdelivr.net/chcontext/1.2.0/chcontext.min.js">chcontext.min.js</a>, add it to your project and include it in your html using appropriate path.</li>
+</ul>
+
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/javascript<span class="pl-pds">"</span></span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>$PATH/chcontext.min.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre></div>
+
+<p>Development minified and unminified versions can be found <a href="dist/">here</a>: </p>
+</li>
+<li>
+<p>Put <code>div</code> element in place where you want the widget to appear. It has to have <code>class="chcontext-widget-wrapper"</code> parameter. Please read <a href="#2-configure-the-widget">how to configure the widget</a>. </p>
+
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">div</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>widget1<span class="pl-pds">"</span></span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>chcontext-widget-wrapper<span class="pl-pds">"</span></span> <span class="pl-e">data-searchProvider</span>=<span class="pl-s"><span class="pl-pds">"</span>FBC+<span class="pl-pds">"</span></span> <span class="pl-e">data-queryselector</span>=<span class="pl-s"><span class="pl-pds">"</span>h1<span class="pl-pds">"</span></span>&gt;
+&lt;/<span class="pl-ent">div</span>&gt;</pre></div>
+</li>
+</ol>
+
+<h3>
+<a id="2-configure-the-widget" class="anchor" href="#2-configure-the-widget" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2. Configure the widget</h3>
+
+<p>Widget main <code>div</code> tag can have the following configuration parameters:</p>
+
+<ul>
+<li>
+<code>data-searchProvider</code> - Name of search provider. Possible values:
+
+<ul>
+<li>
+<code>FBC+</code> - <a href="http://beta.fbc.pionier.net.pl/">Digital Libraries Federation</a>
+</li>
+<li>
+<code>DPLA</code> - <a href="http://dp.la/">Digital Public Library of America</a>
+</li>
+<li>
+<code>EUROPEANA</code> - <a href="http://europeana.eu/">Europeana</a>
+</li>
+</ul>
+</li>
+<li>
+<code>data-customSearchProvider</code> - Name of custom search provider. <a href="#custom-search-provider">Read how to define custom search provider</a>. </li>
+<li>
+<code>data-query</code> - defines the query </li>
+<li>
+<code>data-queryselector</code> - defines which DOM element text will be used to build the query. Elements have to be indicated by <a href="http://api.jquery.com/category/selectors/">jQuery selector</a>. <a href="http://www.w3schools.com/jquery/jquery_selectors.asp">Here</a> you can find some examples. </li>
+<li>
+<code>data-iframe-selector</code> - can be used to run query selection inside of an iframe. An iframe have to be indicated by jQuery selector. This parameter must be used together with <code>data-queryselector</code>. Be aware of that you can select query from inside of an iframe if the iframe is on the same domain as main page. See <a href="example/example2.html">working example</a>. (Please use <a href="http://htmlpreview.github.io/">GitHub HTML Preview</a> to render this HTML.)</li>
+<li>
+<code>data-locale</code> - Language code which indicates the language of widget labels. If the property is not defined widget tries to use language indicated by user browser. Currently English and Polish are supported by default and English is the default language. Custom language can be also used (please read <a href="#custom-language">Custom Language section</a>).</li>
+<li>
+<code>data-resultCount</code> - Maximum number of results to be displayed. Default value is 5.</li>
+<li>
+<code>data-apikey</code> - API key. Required to access results from <a href="http://europeana.eu/portal/api/registration.html">Europeana</a> or <a href="http://dp.la/info/developers/codex/policies/#get-a-key">DPLA</a>.</li>
+<li>
+<code>data-show-img</code> - Whether images should be displayed next to the results.</li>
+<li>
+<code>data-init-disabled</code> - (optional) disable running search on page load.
+<strong>Notice:</strong>
+</li>
+<li>One of <code>data-searchProvider</code> or <code>data-customSearchProvider</code> parameters has to be defined. If both are defined widget uses data-customSearchProvider.</li>
+<li>One of <code>data-query</code> or <code>data-queryselector</code> parameters has to be defined. Please read <a href="#building-queries">how the queries are built</a> if both are parameters are defined.</li>
+<li>The <code>class</code> parameter indicates that current html element will wrap widget html code. Default value is <code>chcontext-widget-wrapper</code> and it should not be overrided.</li>
+</ul>
+
+<h4>
+<a id="building-queries" class="anchor" href="#building-queries" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Building queries</h4>
+
+<ul>
+<li>Query is build by concatenation of <code>data-query</code> text and value indicated by <code>data-queryselector</code>. 
+
+<ul>
+<li>if <code>data-query="painting"</code> and  <code>data-queryselector="h1"</code> where <code>h1</code> DOM element text is <code>Monet</code> then the resulting query is <code>painting Monet</code>. </li>
+<li>try out <a href="example/example1.html">working example (#4)</a>. Please use <a href="http://htmlpreview.github.io/">GitHub HTML Preview</a> to render this HTML.</li>
+</ul>
+</li>
+<li>It is also possible to build more complex queries by using value indicated by <code>data-queryselector</code> inside of the query defined in <code>data-query</code>. You should define <code>data-queryselector</code> and type <code>$$</code> inside of <code>data-query</code> text, in place where you want the value of <code>data-queryselector</code> to appear.
+
+<ul>
+<li>if <code>data-query="painting AND creator:$$</code> and  <code>data-queryselector="h1"</code> where <code>h1</code> DOM element text is <code>Monet</code> then the resulting query is <code>painting AND creator:Monet</code>.</li>
+<li>try out <a href="example/example1.html">working example (#3)</a>. Please use <a href="http://htmlpreview.github.io/">GitHub HTML Preview</a> to render this HTML.</li>
+</ul>
+</li>
+</ul>
+
+<h2>
+<a id="customize" class="anchor" href="#customize" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Customize</h2>
+
+<h3>
+<a id="style-the-widget" class="anchor" href="#style-the-widget" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Style the widget</h3>
+
+<p>You can change the look of the widget using CSS. First check <a href="src/style.css">the default style</a> to find out what classes you should use. Then use inline styling in <code>div</code> element:</p>
+
+<div class="highlight highlight-text-html-basic"><pre> &lt;<span class="pl-ent">div</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>widget1<span class="pl-pds">"</span></span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>chcontext-widget-wrapper<span class="pl-pds">"</span></span> ... <span class="pl-e">style</span>=<span class="pl-s"><span class="pl-pds">"</span>width:100px; height:200px<span class="pl-pds">"</span></span>&gt;
+ &lt;/<span class="pl-ent">div</span>&gt;</pre></div>
+
+<p>or include separate css file. Try out <a href="example/example1.html">working example</a>. (Please use <a href="http://htmlpreview.github.io/">GitHub HTML Preview</a> to render this HTML.)</p>
+
+<h3>
+<a id="add-new-language" class="anchor" href="#add-new-language" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Add new language</h3>
+
+<p>Currently only English and Polish are supported. To use widget with other language you have to </p>
+
+<ul>
+<li>Define JavaScript map containing labels in your language. This map should be defined in separate JS file or inside of <code>&lt;script type="text/javascript"&gt;</code> tag.</li>
+</ul>
+
+<div class="highlight highlight-source-js"><pre>    <span class="pl-k">var</span> <span class="pl-c1">PSNC</span> <span class="pl-k">=</span> <span class="pl-c1">PSNC</span> <span class="pl-k">||</span> {};
+    <span class="pl-c1">PSNC</span>.<span class="pl-smi">chcontext</span> <span class="pl-k">=</span> <span class="pl-c1">PSNC</span>.<span class="pl-smi">chcontext</span> <span class="pl-k">||</span> {};
+    <span class="pl-c1">PSNC</span>.<span class="pl-smi">chcontext</span>.<span class="pl-smi">your_map_name</span> <span class="pl-k">=</span> {
+    <span class="pl-s"><span class="pl-pds">"</span>seeMore<span class="pl-pds">"</span></span> <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>your text for see more results<span class="pl-pds">"</span></span>,
+    <span class="pl-s"><span class="pl-pds">"</span>poweredBy<span class="pl-pds">"</span></span> <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>yout text for powered by<span class="pl-pds">"</span></span>,
+    <span class="pl-s"><span class="pl-pds">"</span>titleLabel<span class="pl-pds">"</span></span> <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>your text for title<span class="pl-pds">"</span></span>,
+    <span class="pl-s"><span class="pl-pds">"</span>authorLabel<span class="pl-pds">"</span></span> <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>your text for author<span class="pl-pds">"</span></span>,
+    <span class="pl-s"><span class="pl-pds">"</span>dateLabel<span class="pl-pds">"</span></span> <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>your text for date<span class="pl-pds">"</span></span>
+    };</pre></div>
+
+<p><strong>First two lines shoud not be removed!</strong> You have to define 4 labels: <code>seeMore</code>,<code>poweredBy</code>,<code>titleLabel</code>,<code>authorLabel</code>. If label is not defined, label in default language is used instead.</p>
+
+<ul>
+<li>Define <code>data-locale</code> parameter. It should be equal to <code>your_language_name</code> from the JS code.</li>
+<li>You can try out <a href="example/example1.html">working example</a> (please use <a href="http://htmlpreview.github.io/">GitHub HTML Preview</a> to render this HTML).</li>
+</ul>
+
+<h3>
+<a id="add-custom-search-provider" class="anchor" href="#add-custom-search-provider" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Add custom search provider</h3>
+
+<ul>
+<li>Define JavaScript object with your implentation of <code>search</code> function. </li>
+<li>
+<code>search</code> function should return results object. Structure of this object can be found <a href="test/data.json">here</a>.</li>
+<li>Define <code>data-customSearchProvider</code> parameter. It should conatain the name of your search provider object.</li>
+</ul>
+
+<p>Try out <a href="example/exampleCustomSearchProvider.html">working example</a> (please use <a href="http://htmlpreview.github.io/">GitHub HTML Preview</a> to render this HTML).</p>
+
+<h3>
+<a id="refresh-search-results-on-demand" class="anchor" href="#refresh-search-results-on-demand" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Refresh search results on demand</h3>
+
+<p>The default behaviour is to run search when jQuery <code>$( document ).ready()</code> event occurs. It is also possible to manually call the search action. To do so please use <code>PSNC.chcsearch.refresh</code> method. You shoud pass jQuery object pointing to the widget you wish to refresh as an argument. </p>
+
+<p>Try out <a href="example/example3">working example</a> (please use <a href="http://htmlpreview.github.io/">GitHub HTML Preview</a> to render this HTML). </p>
+
+<p>In this example search for query=<code>picture</code> is run on page load. You can rerun search with different query string by typing it into input box and clicking <code>Refresh!</code> button. 
+JavaScript code changes the <code>data-query</code> attribute of widget <code>div</code> element and then calls <code>PSNC.chcsearch.refresh</code> method.</p>
+
+<p>You can also disable running search on page load by setting <code>data-init-disabled</code> to <code>true</code> and calling <code>PSNC.chcsearch.refresh</code> method manually instead.</p>
+
+<h2>
+<a id="sites-using-the-widget" class="anchor" href="#sites-using-the-widget" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sites Using the Widget</h2>
+
+
+
+<p><a href="https://github.com/psnc-dl/wp-chcontext/wiki/Sites-Using-the-Widget">Check out</a> sites using <a href="https://github.com/psnc-dl/wp-chcontext">WP-CHContext</a> (our widget as a Wordpress plugin).</p>
+
+<p><a href="http://dl.psnc.pl/contact/">Let us know</a> if you are using the widget :)</p>
+
+<h2>
+<a id="release-notes" class="anchor" href="#release-notes" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Release notes</h2>
+
+<h3>
+<a id="120" class="anchor" href="#120" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.2.0</h3>
+
+<ul>
+<li>Added method allowing to refresh results on demand. </li>
+<li>Added option to disable running search on page load. </li>
+<li>Introduced unit tests. </li>
+<li>Updated CSS styles - size of an image on the results list should no longer be overrided by other styles. </li>
+</ul>
+
+<h3>
+<a id="110" class="anchor" href="#110" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.1.0</h3>
+
+<ul>
+<li>Query can be parameterized with <code>$$</code>, which will be replaced by text indicated by a query selector. </li>
+</ul>
+
+<h3>
+<a id="100" class="anchor" href="#100" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.0.0</h3>
+
+<ul>
+<li>Initial release. </li>
+</ul>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/psnc-dl/chcontext">Chcontext</a> is maintained by <a href="https://github.com/psnc-dl">psnc-dl</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
