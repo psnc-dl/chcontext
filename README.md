@@ -67,6 +67,7 @@ Widget main `div` tag can have the following configuration parameters:
 * `data-resultCount` - Maximum number of results to be displayed. Default value is 5.
 * `data-apikey` - API key. Required to access results from [Europeana](http://europeana.eu/portal/api/registration.html) or [DPLA](http://dp.la/info/developers/codex/policies/#get-a-key).
 * `data-show-img` - Whether images should be displayed next to the results.
+* `data-show-date` - Whether date should be displayed next to the results (right now available only for FBC+ provider)
 * `data-init-disabled` - (optional) disable running search on page load.
 **Notice:**
 * One of `data-searchProvider` or `data-customSearchProvider` parameters has to be defined. If both are defined widget uses data-customSearchProvider.
