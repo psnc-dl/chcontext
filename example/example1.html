@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+		<script type="text/javascript" src="../dist/chcontext.js"></script>
+		<script type="text/javascript" src="frmap.js"></script>
+		<link rel="stylesheet" href="sample.css" type="text/css" />
+		<title>Examples</title>
+	</head>
+	<body>
+		<h1>Examples</h1>
+		<h3>1. query = obraz, locale = fr</h3>
+		final query: obraz
+		<div id="widget1" class="chcontext-widget-wrapper" data-searchProvider="FBC+" data-show-date="true" data-query="obraz" data-locale="fr">
+		</div>
+		<hr />
+		<h3>2. queryselector = '#tags li', show-img=false, custom styles</h3>
+		final query: ((sculpture) OR (painting))
+		<div id="widget2" class="chcontext-widget-wrapper" data-searchProvider="FBC+" data-show-img="false" data-queryselector="#tags li" style="width: 200px; max-height: 1000px;">
+		</div>
+		<h4>Tags:</h4>
+		<ul id="tags">
+			<li>sculpture</li>
+			<li>painting</li>
+		</ul>
+		<hr />
+		<h3>3. query string dc_type = "<span id="toSeach">mapa</span>" from element with id="toSeach", search results not from CMNW, result count = 3</h3>
+		final query: dc_type:mapa AND NOT europeana_dataProvider:&quot;Cyfrowe Muzeum Narodowe w Warszawie&quot;
+		<br />
+		<div id="widget3" class="chcontext-widget-wrapper" data-searchProvider="FBC+" data-queryselector="#toSeach" data-query="dc_type:$$ AND NOT europeana_dataProvider:&quot;Cyfrowe Muzeum Narodowe w Warszawie&quot;" data-resultCount="3"></div>
+		<hr />
+		<h3>4. query string = "<span id="toSeach">mapa</span>" from element with id="toSeach", search results not from CMNW, result count = 3</h3>
+		final query: mapa AND NOT europeana_dataProvider:&quot;Cyfrowe Muzeum Narodowe w Warszawie&quot;
+		<div id="widget3" class="chcontext-widget-wrapper" data-searchProvider="FBC+" data-queryselector="#toSeach" data-query="$$ AND NOT europeana_dataProvider:&quot;Cyfrowe Muzeum Narodowe w Warszawie&quot;" data-resultCount="3"></div>
+	</body>
+</html>
+

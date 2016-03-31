@@ -1,0 +1,41 @@
+#widget1 {
+	max-height: 500px;
+	width: 500px;
+}
+
+.chcontext-widget-container {
+	background: #EAEEEF;
+}
+
+body {
+	font-size: 14px;
+	font-family: Arial,Sans-Serif;
+	font-weight: 400;
+}
+
+a {
+	color: #07a; 
+	text-decoration: none;
+}
+
+a:hover{
+	color: #004664;
+}
+
+.img{
+	border: 0;
+}
+
+#widget3 ol {
+	list-style: none;
+	padding-left: 0;
+	margin: 0;
+}
+
+#widget3 li:nth-child(odd) {
+	background: #C7D1D6;
+}
+
+#widget3 li:nth-child(even) {
+	background: #EAEEEF;
+}
