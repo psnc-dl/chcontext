@@ -62,7 +62,7 @@ Widget main `div` tag can have the following configuration parameters:
 * `data-customSearchProvider` - Name of custom search provider. [Read how to define custom search provider](#custom-search-provider). 
 * `data-query` - defines the query 
 * `data-queryselector` - defines which DOM element text will be used to build the query. Elements have to be indicated by [jQuery selector](http://api.jquery.com/category/selectors/). [Here](http://www.w3schools.com/jquery/jquery_selectors.asp) you can find some examples. 
-* `data-iframe-selector` - can be used to run query selection inside of an iframe. An iframe have to be indicated by jQuery selector. This parameter must be used together with `data-queryselector`. Be aware of that you can select query from inside of an iframe if the iframe is on the same domain as main page. See [working example](example/example2.html). (Please use [GitHub HTML Preview](http://htmlpreview.github.io/) to render this HTML.)
+* `data-iframe-selector` - can be used to run query selection inside of an iframe. An iframe have to be indicated by jQuery selector. This parameter must be used together with `data-queryselector`. Be aware of that you can select query from inside of an iframe if the iframe is on the same domain as main page. See [working example](http://psnc-dl.github.io/chcontext/example/example2.html). (Please use [GitHub HTML Preview](http://htmlpreview.github.io/) to render this HTML.)
 * `data-locale` - Language code which indicates the language of widget labels. If the property is not defined widget tries to use language indicated by user browser. Currently English and Polish are supported by default and English is the default language. Custom language can be also used (please read [Custom Language section](#custom-language)).
 * `data-resultCount` - Maximum number of results to be displayed. Default value is 5.
 * `data-apikey` - API key. Required to access results from [Europeana](http://europeana.eu/portal/api/registration.html) or [DPLA](http://dp.la/info/developers/codex/policies/#get-a-key).
@@ -76,10 +76,10 @@ Widget main `div` tag can have the following configuration parameters:
 #### Building queries
 * Query is build by concatenation of `data-query` text and value indicated by `data-queryselector`. 
  * if `data-query="painting"` and  `data-queryselector="h1"` where `h1` DOM element text is `Monet` then the resulting query is `painting Monet`. 
- * try out [working example (#4)](example/example1.html). Please use [GitHub HTML Preview](http://htmlpreview.github.io/) to render this HTML.
+ * try out [working example (#4)](http://psnc-dl.github.io/chcontext/example/example1.html). 
 * It is also possible to build more complex queries by using value indicated by `data-queryselector` inside of the query defined in `data-query`. You should define `data-queryselector` and type `$$` inside of `data-query` text, in place where you want the value of `data-queryselector` to appear.
  * if `data-query="painting AND creator:$$` and  `data-queryselector="h1"` where `h1` DOM element text is `Monet` then the resulting query is `painting AND creator:Monet`.
- * try out [working example (#3)](example/example1.html). Please use [GitHub HTML Preview](http://htmlpreview.github.io/) to render this HTML.
+ * try out [working example (#3)](http://psnc-dl.github.io/chcontext/example/example1.html). 
 
 ## Customize
 
@@ -90,7 +90,7 @@ You can change the look of the widget using CSS. First check [the default style]
  <div id="widget1" class="chcontext-widget-wrapper" ... style="width:100px; height:200px">
  </div>
 ````
-or include separate css file. Try out [working example](example/example1.html). (Please use [GitHub HTML Preview](http://htmlpreview.github.io/) to render this HTML.)
+or include separate css file. Try out [working example](http://psnc-dl.github.io/chcontext/example/example1.html). 
 
 
 ### Add new language 
@@ -111,20 +111,20 @@ Currently only English and Polish are supported. To use widget with other langua
 **First two lines shoud not be removed!** You have to define 4 labels: `seeMore`,`poweredBy`,`titleLabel`,`authorLabel`. If label is not defined, label in default language is used instead.
 
 * Define `data-locale` parameter. It should be equal to `your_language_name` from the JS code.
-* You can try out [working example](example/example1.html) (please use [GitHub HTML Preview](http://htmlpreview.github.io/) to render this HTML).
+* You can try out [working example](http://psnc-dl.github.io/chcontext/example/example1.html) 
 
 ### Add custom search provider 
 * Define JavaScript object with your implentation of `search` function. 
 * `search` function should return results object. Structure of this object can be found [here](test/data.json).
 * Define `data-customSearchProvider` parameter. It should conatain the name of your search provider object.
 
-Try out [working example](example/exampleCustomSearchProvider.html) (please use [GitHub HTML Preview](http://htmlpreview.github.io/) to render this HTML).
+Try out [working example](http://psnc-dl.github.io/chcontext/example/exampleCustomSearchProvider.html) 
 
 
 ###Refresh search results on demand
 The default behaviour is to run search when jQuery `$( document ).ready()` event occurs. It is also possible to manually call the search action. To do so please use `PSNC.chcsearch.refresh` method. You shoud pass jQuery object pointing to the widget you wish to refresh as an argument. 
 
-Try out [working example](example/example3) (please use [GitHub HTML Preview](http://htmlpreview.github.io/) to render this HTML). 
+Try out [working example](http://psnc-dl.github.io/chcontext/example/example3.html) 
 
 In this example search for query=`picture` is run on page load. You can rerun search with different query string by typing it into input box and clicking `Refresh!` button. 
 JavaScript code changes the `data-query` attribute of widget `div` element and then calls `PSNC.chcsearch.refresh` method.
